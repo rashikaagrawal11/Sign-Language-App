@@ -1,0 +1,2134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SignBridge – Indian Sign Language Learning Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #6C63FF;
+  --primary-light: #EDE9FF;
+  --secondary: #FF6B6B;
+  --accent: #FFD93D;
+  --accent2: #6BCB77;
+  --accent3: #4D96FF;
+  --bg: #F9F7FF;
+  --card: #FFFFFF;
+  --text: #2D2D44;
+  --text-muted: #8887A0;
+  --border: #E8E5F5;
+  --success: #6BCB77;
+  --warning: #FFD93D;
+  --danger: #FF6B6B;
+  --giraffe: #F4A627;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --shadow: 0 4px 24px rgba(108,99,255,0.10);
+  --shadow-md: 0 8px 32px rgba(108,99,255,0.16);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.font-display { font-family: 'Baloo 2', cursive; }
+
+/* NAVBAR */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.6rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  display: flex; align-items: center; gap: 8px;
+}
+.logo-icon { font-size: 1.8rem; -webkit-text-fill-color: initial; }
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  padding: 8px 14px; border-radius: 50px;
+  font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; border: none; background: none;
+  color: var(--text-muted); transition: all 0.2s;
+}
+.nav-link:hover, .nav-link.active {
+  background: var(--primary-light); color: var(--primary);
+}
+.nav-actions { display: flex; align-items: center; gap: 10px; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), #8B7CF6);
+  color: white; border: none; border-radius: 50px;
+  padding: 10px 22px; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; font-family: 'Nunito', sans-serif;
+  box-shadow: 0 4px 16px rgba(108,99,255,0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(108,99,255,0.4); }
+.btn-secondary {
+  background: white; color: var(--primary); border: 2px solid var(--primary);
+  border-radius: 50px; padding: 8px 20px; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; font-family: 'Nunito', sans-serif;
+}
+.btn-secondary:hover { background: var(--primary-light); }
+
+/* LANG SWITCHER */
+.lang-switcher {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--bg); border-radius: 50px; padding: 4px;
+  border: 1px solid var(--border);
+}
+.lang-btn {
+  padding: 4px 12px; border-radius: 50px; border: none;
+  font-size: 0.8rem; font-weight: 700; cursor: pointer;
+  background: transparent; color: var(--text-muted); transition: all 0.2s;
+  font-family: 'Nunito', sans-serif;
+}
+.lang-btn.active { background: var(--primary); color: white; }
+
+/* PAGES */
+.page { display: none; }
+.page.active { display: block; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(145deg, #F0EDFF 0%, #FFF5F5 50%, #F0FFF4 100%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 80px 2rem 2rem; flex-direction: column;
+  position: relative; overflow: hidden;
+}
+.hero-bg-shapes {
+  position: absolute; inset: 0; pointer-events: none;
+}
+.hero-shape {
+  position: absolute; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(108,99,255,0.08), rgba(255,107,107,0.06));
+}
+.hero-content {
+  max-width: 900px; text-align: center; position: relative; z-index: 1;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: white; border: 1px solid var(--border);
+  border-radius: 50px; padding: 8px 20px; margin-bottom: 24px;
+  font-size: 0.85rem; font-weight: 700; color: var(--primary);
+  box-shadow: var(--shadow);
+}
+.hero-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800; line-height: 1.1;
+  margin-bottom: 20px;
+}
+.hero-title span {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-subtitle {
+  font-size: 1.15rem; color: var(--text-muted);
+  max-width: 580px; margin: 0 auto 36px;
+  line-height: 1.7; font-weight: 500;
+}
+.hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+.hero-cta-primary {
+  background: linear-gradient(135deg, var(--primary), #8B7CF6);
+  color: white; border: none; border-radius: 50px;
+  padding: 16px 36px; font-size: 1.05rem; font-weight: 800;
+  cursor: pointer; transition: all 0.25s; font-family: 'Nunito', sans-serif;
+  box-shadow: 0 8px 24px rgba(108,99,255,0.35);
+}
+.hero-cta-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(108,99,255,0.45); }
+.hero-cta-secondary {
+  background: white; color: var(--text); border: 2px solid var(--border);
+  border-radius: 50px; padding: 14px 32px; font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; font-family: 'Nunito', sans-serif;
+}
+.hero-cta-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+/* GIRAFFE MASCOT */
+.giraffe-mascot {
+  font-size: 4rem; animation: float 3s ease-in-out infinite;
+  display: inline-block; filter: drop-shadow(0 8px 16px rgba(244,166,39,0.25));
+}
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+/* STATS ROW */
+.stats-row {
+  display: flex; gap: 32px; justify-content: center; flex-wrap: wrap;
+  margin-top: 0;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: 'Baloo 2', cursive;
+  font-size: 2rem; font-weight: 800; color: var(--primary);
+}
+.stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+
+/* FEATURES GRID */
+.features-section { padding: 80px 2rem; }
+.section-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 2.2rem; font-weight: 800;
+  text-align: center; margin-bottom: 8px;
+}
+.section-subtitle {
+  text-align: center; color: var(--text-muted);
+  font-size: 1rem; margin-bottom: 48px; font-weight: 500;
+}
+.features-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px; max-width: 1200px; margin: 0 auto;
+}
+.feature-card {
+  background: white; border-radius: var(--radius); padding: 28px;
+  border: 1px solid var(--border); transition: all 0.3s;
+  cursor: pointer; box-shadow: var(--shadow);
+}
+.feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--primary); }
+.feature-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; margin-bottom: 16px;
+}
+.feature-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; }
+.feature-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; font-weight: 500; }
+
+/* SIGN CARDS */
+.sign-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px; max-width: 1200px; margin: 0 auto;
+}
+.sign-card {
+  background: white; border-radius: var(--radius-sm);
+  border: 2px solid var(--border); padding: 16px 12px;
+  text-align: center; cursor: pointer; transition: all 0.25s;
+  box-shadow: var(--shadow);
+}
+.sign-card:hover {
+  transform: translateY(-4px) scale(1.04);
+  border-color: var(--primary); box-shadow: var(--shadow-md);
+}
+.sign-card.learned { border-color: var(--success); background: #F0FFF4; }
+.sign-img {
+  width: 80px; height: 80px; margin: 0 auto 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--primary-light); border-radius: 12px;
+  font-size: 2.8rem;
+}
+.sign-label { font-size: 0.9rem; font-weight: 800; color: var(--text); }
+.sign-sublabel { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+
+/* LESSONS PAGE */
+.lessons-header {
+  background: linear-gradient(135deg, var(--primary), #8B7CF6);
+  padding: 100px 2rem 48px; color: white; text-align: center;
+}
+.lessons-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 2.5rem; font-weight: 800; margin-bottom: 12px;
+}
+.lessons-subtitle { font-size: 1rem; opacity: 0.85; font-weight: 500; }
+.lessons-categories { padding: 48px 2rem; max-width: 1200px; margin: 0 auto; }
+.category-tabs {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px;
+}
+.cat-tab {
+  padding: 10px 20px; border-radius: 50px; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; border: 2px solid var(--border); background: white;
+  color: var(--text-muted); transition: all 0.2s; font-family: 'Nunito', sans-serif;
+}
+.cat-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+.cat-tab:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
+.lesson-detail-modal {
+  display: none; position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.lesson-detail-modal.open { display: flex; }
+.lesson-modal-content {
+  background: white; border-radius: var(--radius); padding: 36px;
+  max-width: 600px; width: 100%; position: relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+  max-height: 90vh; overflow-y: auto;
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--bg); border: none; font-size: 1.2rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.big-sign-display {
+  width: 160px; height: 160px; margin: 0 auto 24px;
+  background: var(--primary-light); border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center; font-size: 5rem;
+}
+.sign-steps { list-style: none; margin: 16px 0; }
+.sign-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 800; flex-shrink: 0;
+}
+.step-text { font-size: 0.9rem; line-height: 1.5; color: var(--text); font-weight: 500; }
+
+/* TRANSLATOR PAGE */
+.translator-page { padding: 80px 2rem 2rem; max-width: 1100px; margin: 0 auto; }
+.translator-header { text-align: center; margin-bottom: 48px; padding-top: 20px; }
+.translator-tabs {
+  display: flex; background: white; border-radius: 50px;
+  padding: 6px; border: 2px solid var(--border); display: inline-flex;
+  margin-bottom: 36px;
+}
+.trans-tab {
+  padding: 12px 28px; border-radius: 50px; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; border: none; background: transparent; color: var(--text-muted);
+  transition: all 0.25s; font-family: 'Nunito', sans-serif;
+}
+.trans-tab.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(108,99,255,0.3); }
+.translator-panel { display: none; }
+.translator-panel.active { display: block; }
+.camera-box {
+  background: #1a1a2e; border-radius: var(--radius);
+  aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden; margin-bottom: 20px;
+  max-height: 360px;
+}
+.camera-placeholder { text-align: center; color: rgba(255,255,255,0.7); }
+.camera-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.6; }
+#videoEl { width: 100%; height: 100%; object-fit: cover; display: none; }
+.camera-overlay {
+  position: absolute; inset: 0; pointer-events: none;
+}
+.corner-guide {
+  position: absolute; width: 40px; height: 40px;
+  border: 3px solid var(--accent); border-radius: 4px;
+}
+.corner-guide.tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+.corner-guide.tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+.corner-guide.bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+.corner-guide.br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+.detection-result {
+  background: white; border-radius: var(--radius-sm); padding: 20px;
+  border: 2px solid var(--border); margin-bottom: 16px; min-height: 80px;
+}
+.detected-text {
+  font-size: 2rem; font-weight: 800; color: var(--primary);
+  font-family: 'Baloo 2', cursive;
+}
+.detected-translations { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.trans-pill {
+  padding: 6px 16px; border-radius: 50px;
+  font-size: 0.85rem; font-weight: 700;
+  background: var(--primary-light); color: var(--primary);
+}
+.text-to-sign-input {
+  width: 100%; padding: 16px 20px; font-size: 1rem; font-weight: 600;
+  border: 2px solid var(--border); border-radius: var(--radius-sm);
+  font-family: 'Nunito', sans-serif; outline: none; resize: none;
+  transition: border-color 0.2s;
+}
+.text-to-sign-input:focus { border-color: var(--primary); }
+.sign-sequence {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; min-height: 100px;
+  align-items: flex-start;
+}
+.sign-seq-card {
+  background: white; border-radius: var(--radius-sm); padding: 16px;
+  border: 2px solid var(--primary-light); text-align: center; min-width: 80px;
+  animation: slideIn 0.3s ease;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.sign-seq-img { font-size: 2.5rem; margin-bottom: 6px; }
+.sign-seq-label { font-size: 0.8rem; font-weight: 800; color: var(--primary); }
+.voice-btn {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--secondary), #FF8E8E);
+  border: none; cursor: pointer; font-size: 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(255,107,107,0.35);
+  transition: all 0.2s; flex-shrink: 0;
+}
+.voice-btn:hover { transform: scale(1.1); }
+.voice-btn.recording { animation: pulse-mic 1s infinite; }
+@keyframes pulse-mic {
+  0%,100% { box-shadow: 0 4px 16px rgba(255,107,107,0.35), 0 0 0 0 rgba(255,107,107,0.4); }
+  50% { box-shadow: 0 4px 16px rgba(255,107,107,0.35), 0 0 0 12px rgba(255,107,107,0); }
+}
+.speak-btn {
+  background: linear-gradient(135deg, var(--accent2), #4DC76B);
+  color: white; border: none; border-radius: 50px;
+  padding: 12px 24px; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; font-family: 'Nunito', sans-serif;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 4px 16px rgba(107,203,119,0.3);
+  transition: all 0.2s;
+}
+.speak-btn:hover { transform: translateY(-2px); }
+
+/* PRACTICE PAGE */
+.practice-page { padding: 80px 2rem 2rem; max-width: 1100px; margin: 0 auto; }
+.practice-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px; margin-top: 36px;
+}
+.practice-card {
+  background: white; border-radius: var(--radius); padding: 28px;
+  border: 2px solid var(--border); cursor: pointer; transition: all 0.3s;
+  box-shadow: var(--shadow); text-align: center;
+}
+.practice-card:hover { transform: translateY(-6px); border-color: var(--primary); box-shadow: var(--shadow-md); }
+.practice-icon { font-size: 3rem; margin-bottom: 16px; }
+.practice-name { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; }
+.practice-desc { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
+/* FLASHCARD GAME */
+.flashcard-game { display: none; padding-top: 16px; }
+.flashcard-game.active { display: block; }
+.flashcard {
+  width: 320px; height: 220px; margin: 0 auto 24px;
+  position: relative; cursor: pointer;
+  perspective: 800px;
+}
+.flashcard-inner {
+  width: 100%; height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-front, .flashcard-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden; border-radius: var(--radius);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 20px;
+  border: 2px solid var(--border); box-shadow: var(--shadow);
+}
+.flashcard-front { background: white; }
+.flashcard-back { background: var(--primary-light); transform: rotateY(180deg); }
+.flashcard-sign { font-size: 4.5rem; margin-bottom: 12px; }
+.flashcard-hint { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+.flashcard-answer { font-size: 2rem; font-weight: 800; color: var(--primary); font-family: 'Baloo 2', cursive; }
+
+/* QUIZ GAME */
+.quiz-game { display: none; }
+.quiz-game.active { display: block; }
+.quiz-question {
+  font-size: 1.3rem; font-weight: 800; text-align: center;
+  margin-bottom: 24px; line-height: 1.4;
+}
+.quiz-sign-display {
+  font-size: 6rem; text-align: center; margin-bottom: 24px;
+}
+.quiz-options {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  max-width: 480px; margin: 0 auto;
+}
+.quiz-opt {
+  padding: 16px; border: 2px solid var(--border); border-radius: var(--radius-sm);
+  background: white; font-size: 1rem; font-weight: 700; cursor: pointer;
+  transition: all 0.2s; text-align: center; font-family: 'Nunito', sans-serif;
+}
+.quiz-opt:hover { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+.quiz-opt.correct { border-color: var(--success); background: #F0FFF4; color: var(--success); }
+.quiz-opt.wrong { border-color: var(--danger); background: #FFF0F0; color: var(--danger); }
+
+/* DASHBOARD */
+.dashboard-page { padding: 80px 2rem 2rem; max-width: 1100px; margin: 0 auto; }
+.progress-header {
+  background: linear-gradient(135deg, var(--primary), #8B7CF6);
+  border-radius: var(--radius); padding: 32px; color: white; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.user-avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(255,255,255,0.25); display: flex;
+  align-items: center; justify-content: center; font-size: 2rem;
+}
+.user-info h2 { font-family: 'Baloo 2', cursive; font-size: 1.5rem; font-weight: 800; }
+.user-info p { opacity: 0.85; font-size: 0.9rem; font-weight: 500; }
+.streak-badge {
+  margin-left: auto; background: rgba(255,255,255,0.2); border-radius: var(--radius-sm);
+  padding: 16px 24px; text-align: center;
+}
+.streak-num { font-family: 'Baloo 2', cursive; font-size: 2.2rem; font-weight: 800; }
+.streak-label { font-size: 0.8rem; opacity: 0.85; font-weight: 600; }
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px; margin-bottom: 24px;
+}
+.stat-card {
+  background: white; border-radius: var(--radius-sm); padding: 20px;
+  border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow);
+}
+.stat-card-icon { font-size: 1.8rem; margin-bottom: 8px; }
+.stat-card-val { font-family: 'Baloo 2', cursive; font-size: 2rem; font-weight: 800; color: var(--primary); }
+.stat-card-lbl { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+.progress-section { background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); margin-bottom: 24px; }
+.progress-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 20px; }
+.progress-item { margin-bottom: 16px; }
+.progress-item-label {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 6px; font-size: 0.9rem; font-weight: 700;
+}
+.progress-bar-bg {
+  height: 10px; background: var(--bg); border-radius: 50px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%; border-radius: 50px;
+  background: linear-gradient(90deg, var(--primary), #8B7CF6);
+  transition: width 1s ease;
+}
+.badges-grid { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+.badge {
+  width: 64px; height: 64px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-size: 1.6rem;
+  border: 3px solid;
+}
+.badge.earned { background: var(--primary-light); border-color: var(--primary); }
+.badge.locked { background: #F5F5F5; border-color: #DDD; filter: grayscale(1); opacity: 0.5; }
+
+/* EMERGENCY PAGE */
+.emergency-page { padding: 80px 2rem 2rem; max-width: 1000px; margin: 0 auto; }
+.emergency-header {
+  background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+  border-radius: var(--radius); padding: 28px; color: white;
+  text-align: center; margin-bottom: 32px;
+}
+.emergency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+.emergency-card {
+  background: white; border-radius: var(--radius); padding: 24px;
+  text-align: center; border: 2px solid var(--border); cursor: pointer;
+  transition: all 0.25s; box-shadow: var(--shadow);
+}
+.emergency-card:hover { transform: scale(1.05); border-color: var(--secondary); }
+.emergency-icon { font-size: 3.5rem; margin-bottom: 12px; }
+.emergency-word { font-size: 1rem; font-weight: 800; }
+.emergency-sign-hint { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+
+/* PARENT MODE */
+.parent-page { padding: 80px 2rem 2rem; max-width: 1100px; margin: 0 auto; }
+.parent-intro {
+  background: linear-gradient(135deg, var(--giraffe), #F4C842);
+  border-radius: var(--radius); padding: 32px; color: var(--text); margin-bottom: 32px;
+  display: flex; align-items: center; gap: 24px;
+}
+.parent-intro-text h2 { font-family: 'Baloo 2', cursive; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+.parent-intro-text p { font-size: 1rem; font-weight: 500; opacity: 0.85; }
+
+/* REGISTRATION / LOGIN */
+.auth-page {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 80px 2rem 2rem;
+  background: linear-gradient(145deg, #F0EDFF 0%, #FFF5F5 100%);
+}
+.auth-card {
+  background: white; border-radius: var(--radius); padding: 40px;
+  max-width: 480px; width: 100%; box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+}
+.auth-title { font-family: 'Baloo 2', cursive; font-size: 2rem; font-weight: 800; margin-bottom: 6px; }
+.auth-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 28px; font-weight: 500; }
+.form-group { margin-bottom: 18px; }
+.form-label { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; display: block; color: var(--text); }
+.form-input, .form-select {
+  width: 100%; padding: 12px 16px; border: 2px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 0.95rem; font-family: 'Nunito', sans-serif;
+  outline: none; transition: border-color 0.2s; background: white; color: var(--text);
+}
+.form-input:focus, .form-select:focus { border-color: var(--primary); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.auth-divider {
+  text-align: center; position: relative; margin: 20px 0; color: var(--text-muted);
+  font-size: 0.85rem; font-weight: 600;
+}
+.auth-divider::before {
+  content: ''; position: absolute; top: 50%; left: 0; right: 0;
+  height: 1px; background: var(--border);
+}
+.auth-divider span { background: white; padding: 0 12px; position: relative; }
+.auth-switch { text-align: center; margin-top: 16px; font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+.auth-switch a { color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: none; }
+
+/* NOTIFICATION TOAST */
+.toast {
+  position: fixed; bottom: 32px; right: 32px; z-index: 9999;
+  background: white; border-radius: var(--radius-sm); padding: 16px 24px;
+  box-shadow: var(--shadow-md); border-left: 4px solid var(--success);
+  font-weight: 700; font-size: 0.9rem; display: none;
+  animation: toastIn 0.4s ease;
+  max-width: 320px;
+}
+.toast.show { display: flex; align-items: center; gap: 12px; }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* XP BAR */
+.xp-bar-wrap {
+  background: var(--bg); border-radius: var(--radius);
+  padding: 16px 24px; display: flex; align-items: center; gap: 16px;
+  border: 1px solid var(--border); margin-bottom: 24px;
+}
+.xp-label { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+.xp-bar {
+  flex: 1; height: 12px; background: #F0EDFF; border-radius: 50px; overflow: hidden;
+}
+.xp-fill {
+  height: 100%; border-radius: 50px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  width: 65%; transition: width 0.8s ease;
+}
+.xp-level { font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 800; color: var(--primary); white-space: nowrap; }
+
+/* CELEBRATION */
+.celebration {
+  position: fixed; inset: 0; z-index: 5000; pointer-events: none;
+  display: flex; align-items: center; justify-content: center; display: none;
+}
+.celebration.show { display: flex; }
+.celebration-inner {
+  background: white; border-radius: var(--radius); padding: 40px;
+  text-align: center; box-shadow: var(--shadow-md); pointer-events: all;
+  border: 2px solid var(--primary);
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+.celeb-giraffe { font-size: 5rem; animation: float 2s ease-in-out infinite; }
+.celeb-title { font-family: 'Baloo 2', cursive; font-size: 2rem; font-weight: 800; color: var(--primary); margin: 12px 0 6px; }
+.celeb-msg { color: var(--text-muted); font-weight: 500; margin-bottom: 20px; }
+
+/* COMMUNITY */
+.community-page { padding: 80px 2rem 2rem; max-width: 1100px; margin: 0 auto; }
+.leaderboard { background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+.lb-row {
+  display: flex; align-items: center; gap: 16px; padding: 16px 24px;
+  border-bottom: 1px solid var(--border); transition: background 0.2s;
+}
+.lb-row:hover { background: var(--bg); }
+.lb-rank { font-family: 'Baloo 2', cursive; font-size: 1.4rem; font-weight: 800; width: 36px; color: var(--text-muted); }
+.lb-rank.top3 { color: var(--giraffe); }
+.lb-avatar {
+  width: 44px; height: 44px; border-radius: 50%; font-size: 1.4rem;
+  background: var(--primary-light); display: flex; align-items: center; justify-content: center;
+}
+.lb-name { flex: 1; font-weight: 700; }
+.lb-xp { font-weight: 800; color: var(--primary); font-family: 'Baloo 2', cursive; }
+
+/* TEACHER DASHBOARD */
+.teacher-page { padding: 80px 2rem 2rem; max-width: 1100px; margin: 0 auto; }
+.teacher-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
+.t-stat-card {
+  background: white; border-radius: var(--radius-sm); padding: 20px;
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+}
+.t-stat-num { font-family: 'Baloo 2', cursive; font-size: 2.2rem; font-weight: 800; }
+.t-stat-lbl { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+.student-list { background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+.s-row {
+  display: grid; grid-template-columns: auto 1fr auto auto;
+  align-items: center; gap: 16px; padding: 14px 24px; border-bottom: 1px solid var(--border);
+}
+.s-avatar {
+  width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem;
+  background: var(--primary-light); display: flex; align-items: center; justify-content: center;
+}
+.s-name { font-weight: 700; font-size: 0.95rem; }
+.s-progress { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+.mini-bar { width: 100px; height: 8px; background: var(--bg); border-radius: 50px; overflow: hidden; }
+.mini-fill { height: 100%; background: var(--primary); border-radius: 50px; }
+.s-badge-pill {
+  padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
+}
+.s-badge-pill.good { background: #F0FFF4; color: var(--success); }
+.s-badge-pill.avg { background: #FFF8E0; color: #B8860B; }
+.s-badge-pill.needs { background: #FFF0F0; color: var(--danger); }
+
+/* CONFETTI */
+.confetti-container {
+  position: fixed; inset: 0; pointer-events: none; z-index: 4999;
+}
+.confetti-piece {
+  position: absolute; width: 10px; height: 10px; border-radius: 2px;
+  animation: confetti-fall 3s ease-in forwards;
+}
+@keyframes confetti-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ISL HAND EMOJIS - Use real hand positions */
+.hand-sign { font-size: 3.5rem; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero-title { font-size: 2.2rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .s-row { grid-template-columns: auto 1fr auto; }
+}
+
+/* OFFLINE BANNER */
+.offline-banner {
+  background: var(--warning); color: var(--text); padding: 10px 2rem;
+  text-align: center; font-weight: 700; font-size: 0.85rem; display: none;
+}
+.offline-banner.show { display: block; }
+
+/* LOADING SPINNER */
+.spinner {
+  width: 40px; height: 40px; border: 4px solid var(--primary-light);
+  border-top-color: var(--primary); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin: 20px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* API RESULT */
+.api-result-box {
+  background: linear-gradient(135deg, var(--primary-light), #FFF0F5);
+  border-radius: var(--radius-sm); padding: 20px; margin-top: 16px;
+  border: 2px solid var(--primary);
+}
+.api-result-text { font-size: 1.2rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+.api-result-multi { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.multi-pill {
+  padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 700;
+}
+</style>
+</head>
+<body>
+
+<!-- OFFLINE BANNER -->
+<div class="offline-banner" id="offlineBanner">📡 You're offline – lessons are available from cache</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">
+    <span class="logo-icon">🦒</span>
+    SignBridge
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')">Home</button>
+    <button class="nav-link" onclick="showPage('lessons')">Lessons</button>
+    <button class="nav-link" onclick="showPage('translator')">Translator</button>
+    <button class="nav-link" onclick="showPage('practice')">Practice</button>
+    <button class="nav-link" onclick="showPage('emergency')">Emergency</button>
+    <button class="nav-link" onclick="showPage('parent')">Parents</button>
+    <button class="nav-link" onclick="showPage('dashboard')">Progress</button>
+    <button class="nav-link" onclick="showPage('community')">Community</button>
+    <button class="nav-link" onclick="showPage('teacher')">Teacher</button>
+  </div>
+  <div class="nav-actions">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('hi')">हि</button>
+      <button class="lang-btn" onclick="setLang('gu')">ગુ</button>
+    </div>
+    <button class="btn-secondary" onclick="showPage('login')">Login</button>
+    <button class="btn-primary" onclick="showPage('register')">Get Started</button>
+  </div>
+</nav>
+
+<!-- CELEBRATION OVERLAY -->
+<div class="celebration" id="celebration">
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4)" onclick="hideCelebration()"></div>
+  <div class="celebration-inner">
+    <div class="celeb-giraffe">🦒</div>
+    <div class="celeb-title" id="celebTitle">Amazing! 🎉</div>
+    <div class="celeb-msg" id="celebMsg">You earned 20 XP!</div>
+    <button class="btn-primary" onclick="hideCelebration()">Keep Going!</button>
+  </div>
+</div>
+<div class="confetti-container" id="confettiContainer"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Great job!</span>
+</div>
+
+<!-- LESSON MODAL -->
+<div class="lesson-detail-modal" id="lessonModal">
+  <div class="lesson-modal-content">
+    <button class="modal-close" onclick="closeLessonModal()">✕</button>
+    <div class="big-sign-display" id="modalSignImg">🤚</div>
+    <h2 style="font-family:'Baloo 2',cursive;font-size:1.8rem;font-weight:800;text-align:center;margin-bottom:4px" id="modalTitle">Hello</h2>
+    <p style="text-align:center;color:var(--text-muted);font-size:0.9rem;font-weight:600;margin-bottom:20px" id="modalTranslation">नमस्ते / નમસ્તે</p>
+    <h4 style="font-weight:800;font-size:0.95rem;margin-bottom:8px">How to sign:</h4>
+    <ul class="sign-steps" id="modalSteps"></ul>
+    <div style="display:flex;gap:12px;margin-top:20px">
+      <button class="btn-primary" style="flex:1" onclick="markLearned()">✅ Mark as Learned (+20 XP)</button>
+      <button class="speak-btn" onclick="speakCurrentSign()">🔊 Hear it</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: HOME ===== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-bg-shapes">
+      <div class="hero-shape" style="width:400px;height:400px;top:-100px;right:-100px;opacity:0.5"></div>
+      <div class="hero-shape" style="width:300px;height:300px;bottom:-50px;left:-80px;opacity:0.4;background:linear-gradient(135deg,rgba(255,107,107,0.1),rgba(255,217,61,0.08))"></div>
+    </div>
+    <div class="hero-content">
+      <div class="giraffe-mascot">🦒</div>
+      <div style="margin-top:16px">
+        <div class="hero-badge">🇮🇳 Indian Sign Language Platform</div>
+        <h1 class="hero-title font-display">
+          Bridge Every<br><span>Silent Conversation</span>
+        </h1>
+        <p class="hero-subtitle" id="heroSubtitle">
+          SignBridge brings Indian Sign Language to every home, classroom, and family — with AI-powered translation, gamified learning, and full Gujarati, Hindi & English support.
+        </p>
+        <div class="hero-ctas">
+          <button class="hero-cta-primary" onclick="showPage('register')">🚀 Start Learning Free</button>
+          <button class="hero-cta-secondary" onclick="showPage('translator')">🤟 Try Translator</button>
+        </div>
+        <div class="stats-row">
+          <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">ISL Signs</div></div>
+          <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Languages</div></div>
+          <div class="stat-item"><div class="stat-num">AI</div><div class="stat-label">Powered</div></div>
+          <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Accessible</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section">
+    <h2 class="section-title font-display">Everything You Need</h2>
+    <p class="section-subtitle">A complete ISL ecosystem — learn, practice, communicate</p>
+    <div class="features-grid">
+      <div class="feature-card" onclick="showPage('lessons')">
+        <div class="feature-icon" style="background:#EDE9FF">📚</div>
+        <div class="feature-title">Structured Lessons</div>
+        <div class="feature-desc">Alphabets, numbers, emotions, family, emergency — all with step-by-step ISL guidance and visual demonstrations.</div>
+      </div>
+      <div class="feature-card" onclick="showPage('translator')">
+        <div class="feature-icon" style="background:#FFF0F0">🤟</div>
+        <div class="feature-title">AI Translator</div>
+        <div class="feature-desc">Convert signs to text/speech or type/speak to get ISL sign sequences. Gujarati, Hindi & English supported.</div>
+      </div>
+      <div class="feature-card" onclick="showPage('practice')">
+        <div class="feature-icon" style="background:#F0FFF4">🎮</div>
+        <div class="feature-title">Gamified Practice</div>
+        <div class="feature-desc">Flashcards, quizzes, memory games, story missions — earn XP, badges, and giraffe stickers!</div>
+      </div>
+      <div class="feature-card" onclick="showPage('emergency')">
+        <div class="feature-icon" style="background:#FFF5E0">🚨</div>
+        <div class="feature-title">Emergency Signs</div>
+        <div class="feature-desc">Quick-access emergency signs for help, pain, hunger, danger — visible at a glance.</div>
+      </div>
+      <div class="feature-card" onclick="showPage('parent')">
+        <div class="feature-icon" style="background:#FFF0FB">👨‍👩‍👧</div>
+        <div class="feature-title">Parent Mode</div>
+        <div class="feature-desc">Beginner ISL lessons for parents — bridge the communication gap at home with daily phrases.</div>
+      </div>
+      <div class="feature-card" onclick="showPage('dashboard')">
+        <div class="feature-icon" style="background:#E8F4FF">📊</div>
+        <div class="feature-title">Progress Tracking</div>
+        <div class="feature-desc">Detailed analytics, streaks, accuracy charts, weekly reports, and milestone badges.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK PREVIEW: ISL ALPHABETS -->
+  <section style="padding:0 2rem 80px">
+    <h2 class="section-title font-display">ISL Alphabets Preview</h2>
+    <p class="section-subtitle">Tap any sign to learn the correct hand position</p>
+    <div class="sign-grid" id="alphabetPreview"></div>
+    <div style="text-align:center;margin-top:28px">
+      <button class="btn-primary" onclick="showPage('lessons')">View All 500+ Signs →</button>
+    </div>
+  </section>
+</div>
+
+<!-- ===== PAGE: LESSONS ===== -->
+<div class="page" id="page-lessons">
+  <div class="lessons-header">
+    <div class="giraffe-mascot" style="font-size:3rem">🦒</div>
+    <h1 class="lessons-title font-display">ISL Lessons</h1>
+    <p class="lessons-subtitle" id="lessonsSubtitle">Learn authentic Indian Sign Language step by step</p>
+  </div>
+  <div class="lessons-categories">
+    <div class="xp-bar-wrap">
+      <span class="xp-label">Level 4 · 650/1000 XP</span>
+      <div class="xp-bar"><div class="xp-fill" style="width:65%"></div></div>
+      <span class="xp-level">🦒 Giraffe Intermediate</span>
+    </div>
+    <div class="category-tabs" id="categoryTabs"></div>
+    <div class="sign-grid" id="lessonSignGrid"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: TRANSLATOR ===== -->
+<div class="page" id="page-translator">
+  <div class="translator-page">
+    <div class="translator-header">
+      <div class="giraffe-mascot" style="font-size:2.5rem">🦒</div>
+      <h1 class="font-display" style="font-size:2.5rem;font-weight:800;margin:12px 0 8px" id="transTitle">ISL Translator</h1>
+      <p style="color:var(--text-muted);font-weight:500" id="transSubtitle">Two-way real-time communication powered by AI</p>
+      <div style="margin-top:20px">
+        <div class="translator-tabs">
+          <button class="trans-tab active" onclick="switchTranslator('sign2text')">📷 Sign → Text</button>
+          <button class="trans-tab" onclick="switchTranslator('text2sign')">⌨️ Text → Sign</button>
+          <button class="trans-tab" onclick="switchTranslator('voice2sign')">🎙️ Voice → Sign</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIGN TO TEXT -->
+    <div class="translator-panel active" id="panel-sign2text">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" class="trans-grid">
+        <div>
+          <h3 style="font-weight:800;margin-bottom:12px">📷 Camera Feed</h3>
+          <div class="camera-box">
+            <video id="videoEl" autoplay playsinline muted></video>
+            <div class="camera-overlay" id="camOverlay">
+              <div class="camera-placeholder" id="camPlaceholder">
+                <div class="camera-icon">📷</div>
+                <p style="font-weight:600;font-size:0.95rem">Camera not started</p>
+                <p style="font-size:0.8rem;opacity:0.7;margin-top:6px">Click "Start Camera" below</p>
+              </div>
+              <div class="corner-guide tl" id="cg1" style="display:none"></div>
+              <div class="corner-guide tr" id="cg2" style="display:none"></div>
+              <div class="corner-guide bl" id="cg3" style="display:none"></div>
+              <div class="corner-guide br" id="cg4" style="display:none"></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-bottom:12px">
+            <button class="btn-primary" id="camBtn" onclick="toggleCamera()" style="flex:1">📷 Start Camera</button>
+            <button class="btn-secondary" onclick="captureAndAnalyze()" id="captureBtn" disabled style="flex:1">🔍 Detect Sign</button>
+          </div>
+          <div style="background:#F8F7FF;border-radius:var(--radius-sm);padding:14px;border:1px solid var(--border)">
+            <p style="font-size:0.8rem;font-weight:700;color:var(--text-muted);margin-bottom:6px">💡 Tips for best detection:</p>
+            <p style="font-size:0.8rem;color:var(--text-muted);font-weight:500;line-height:1.6">• Hold your hand clearly in frame<br>• Ensure good lighting<br>• Keep hand within the corner guides<br>• Hold sign still for 2-3 seconds</p>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-weight:800;margin-bottom:12px">📝 Detection Result</h3>
+          <div class="detection-result" id="detectionResult">
+            <p style="color:var(--text-muted);font-weight:600;font-size:0.9rem">Detected sign will appear here...</p>
+          </div>
+          <h4 style="font-weight:800;margin:12px 0 8px">🌐 Translations</h4>
+          <div id="translationOutput" style="background:white;border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;min-height:80px">
+            <p style="color:var(--text-muted);font-size:0.9rem;font-weight:500">Translations in Gujarati, Hindi, English will appear here after detection.</p>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;align-items:center">
+            <button class="speak-btn" id="speakResultBtn" onclick="speakResult()" style="display:none">🔊 Speak Result</button>
+            <button class="speak-btn" onclick="simulateDetection()" style="background:linear-gradient(135deg,var(--accent3),#2478e0)">🎯 Demo Detection</button>
+          </div>
+          <div style="margin-top:16px;background:#F0FFF4;border-radius:var(--radius-sm);padding:14px;border:1px solid var(--success)">
+            <p style="font-size:0.8rem;font-weight:700;color:var(--success)">🤖 AI Model</p>
+            <p style="font-size:0.8rem;color:var(--text-muted);font-weight:500;margin-top:4px">Using Claude AI for intelligent sign interpretation and multilingual translation via Anthropic API</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEXT TO SIGN -->
+    <div class="translator-panel" id="panel-text2sign">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" class="trans-grid">
+        <div>
+          <h3 style="font-weight:800;margin-bottom:12px">⌨️ Type Your Message</h3>
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <select class="form-select" id="inputLangSelect" style="width:auto;padding:10px 14px">
+              <option value="en">English</option>
+              <option value="hi">Hindi</option>
+              <option value="gu">Gujarati</option>
+            </select>
+            <select class="form-select" id="outputLangSelect" style="width:auto;padding:10px 14px">
+              <option value="en">→ English</option>
+              <option value="hi">→ Hindi</option>
+              <option value="gu">→ Gujarati</option>
+            </select>
+          </div>
+          <textarea class="text-to-sign-input" id="textInput" rows="5"
+            placeholder="Type in English, Hindi, or Gujarati...
+e.g. 'I am hungry' / 'मुझे भूख लगी है' / 'મને ભૂખ લાગી છે'"></textarea>
+          <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
+            <button class="btn-primary" onclick="convertTextToSign()" style="flex:1">🤟 Convert to Sign</button>
+            <button class="voice-btn" id="voiceInputBtn" onclick="toggleVoiceInput()" title="Voice Input">🎙️</button>
+          </div>
+          <div style="margin-top:12px;background:#EDE9FF;border-radius:var(--radius-sm);padding:12px">
+            <p style="font-size:0.8rem;font-weight:700;color:var(--primary)">🌐 Multilingual AI Translation</p>
+            <p style="font-size:0.8rem;color:var(--text-muted);font-weight:500;margin-top:4px">Claude AI translates your text and maps it to the correct ISL gesture sequence</p>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-weight:800;margin-bottom:12px">🤟 ISL Sign Sequence</h3>
+          <div id="signSequenceOutput" style="background:white;border:2px solid var(--border);border-radius:var(--radius-sm);min-height:180px;padding:16px">
+            <p style="color:var(--text-muted);font-weight:500;font-size:0.9rem">ISL signs will appear here...</p>
+          </div>
+          <div id="signExplanation" style="margin-top:12px;display:none">
+            <h4 style="font-weight:800;font-size:0.9rem;margin-bottom:8px">Step-by-Step Guide</h4>
+            <div id="signStepsOutput" style="background:var(--bg);border-radius:var(--radius-sm);padding:14px;font-size:0.85rem;line-height:1.8;font-weight:500"></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="speak-btn" id="speakTextBtn" onclick="speakTranslation()" style="display:none;flex:1">🔊 Speak</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VOICE TO SIGN -->
+    <div class="translator-panel" id="panel-voice2sign">
+      <div style="text-align:center;padding:40px 20px">
+        <div class="giraffe-mascot" style="font-size:3rem;margin-bottom:16px">🦒</div>
+        <h3 style="font-family:'Baloo 2',cursive;font-size:1.8rem;font-weight:800;margin-bottom:8px">Voice to Sign</h3>
+        <p style="color:var(--text-muted);font-weight:500;margin-bottom:32px">Speak in any language — SignBridge converts it to ISL</p>
+        <button class="voice-btn" id="mainVoiceBtn" onclick="toggleVoiceSpeech()" style="width:90px;height:90px;font-size:2rem;margin:0 auto">🎙️</button>
+        <p style="margin-top:16px;font-size:0.9rem;color:var(--text-muted);font-weight:600" id="voiceStatus">Tap to start speaking</p>
+        <div id="voiceResult" style="margin-top:24px;max-width:600px;margin-left:auto;margin-right:auto"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: PRACTICE ===== -->
+<div class="page" id="page-practice">
+  <div class="practice-page">
+    <div style="padding-top:20px">
+      <div class="giraffe-mascot" style="font-size:2.5rem">🦒</div>
+      <h1 class="font-display" style="font-size:2.5rem;font-weight:800;margin:12px 0 6px" id="practiceTitle">Practice Zone</h1>
+      <p style="color:var(--text-muted);font-weight:500" id="practiceSubtitle">Games, flashcards, and challenges to master ISL</p>
+    </div>
+
+    <div class="xp-bar-wrap" style="margin-top:20px">
+      <span class="xp-label">Level 4</span>
+      <div class="xp-bar"><div class="xp-fill" style="width:65%"></div></div>
+      <span class="xp-level">650 / 1000 XP 🦒</span>
+    </div>
+
+    <div class="practice-grid" id="practiceGrid">
+      <div class="practice-card" onclick="startGame('flashcard')">
+        <div class="practice-icon">🃏</div>
+        <div class="practice-name">Flashcards</div>
+        <div class="practice-desc">Flip cards to reveal signs and test your memory</div>
+      </div>
+      <div class="practice-card" onclick="startGame('quiz')">
+        <div class="practice-icon">🧠</div>
+        <div class="practice-name">Quiz Mode</div>
+        <div class="practice-desc">Multiple choice — identify the correct sign</div>
+      </div>
+      <div class="practice-card" onclick="startGame('match')">
+        <div class="practice-icon">🎯</div>
+        <div class="practice-name">Match the Sign</div>
+        <div class="practice-desc">Match signs to words in this memory challenge</div>
+      </div>
+      <div class="practice-card" onclick="startGame('story')">
+        <div class="practice-icon">📖</div>
+        <div class="practice-name">Story Missions</div>
+        <div class="practice-desc">Learn signs in the context of fun ISL stories</div>
+      </div>
+      <div class="practice-card" onclick="startGame('speed')">
+        <div class="practice-icon">⚡</div>
+        <div class="practice-name">Speed Round</div>
+        <div class="practice-desc">How many signs can you identify in 60 seconds?</div>
+      </div>
+      <div class="practice-card" onclick="startGame('challenge')">
+        <div class="practice-icon">🏆</div>
+        <div class="practice-name">Daily Challenge</div>
+        <div class="practice-desc">Today's special sign challenge — +50 bonus XP</div>
+      </div>
+    </div>
+
+    <!-- FLASHCARD GAME -->
+    <div class="flashcard-game" id="flashcard-game">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+        <button onclick="exitGame('flashcard')" style="background:var(--bg);border:none;border-radius:50px;padding:8px 16px;cursor:pointer;font-weight:700;font-size:0.9rem">← Back</button>
+        <h3 style="font-weight:800">Flashcards</h3>
+        <div style="margin-left:auto;background:var(--primary-light);border-radius:50px;padding:6px 16px;font-size:0.85rem;font-weight:700;color:var(--primary)" id="fcProgress">Card 1/10</div>
+      </div>
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="flashcard-inner" id="flashcardInner">
+          <div class="flashcard-front">
+            <div class="flashcard-sign" id="fcSign">🤚</div>
+            <div class="flashcard-hint">Tap to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            <div class="flashcard-answer" id="fcAnswer">Hello</div>
+            <div style="font-size:0.85rem;color:var(--text-muted);margin-top:6px;font-weight:500" id="fcGujarati"></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:16px">
+        <button onclick="fcNavigate(-1)" class="btn-secondary">← Prev</button>
+        <button onclick="fcNavigate(1)" class="btn-primary">Next →</button>
+      </div>
+    </div>
+
+    <!-- QUIZ GAME -->
+    <div class="quiz-game" id="quiz-game">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+        <button onclick="exitGame('quiz')" style="background:var(--bg);border:none;border-radius:50px;padding:8px 16px;cursor:pointer;font-weight:700;font-size:0.9rem">← Back</button>
+        <h3 style="font-weight:800">Sign Quiz</h3>
+        <div style="margin-left:auto;background:var(--primary-light);border-radius:50px;padding:6px 16px;font-size:0.85rem;font-weight:700;color:var(--primary)" id="quizScore">Score: 0</div>
+      </div>
+      <div style="background:white;border-radius:var(--radius);padding:32px;border:1px solid var(--border);text-align:center;max-width:520px;margin:0 auto">
+        <div class="quiz-sign-display" id="quizSignDisplay">🤚</div>
+        <div class="quiz-question" id="quizQuestion">What does this sign mean?</div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div style="margin-top:20px;font-size:0.85rem;color:var(--text-muted);font-weight:600" id="quizFeedback"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: EMERGENCY ===== -->
+<div class="page" id="page-emergency">
+  <div class="emergency-page">
+    <div class="emergency-header">
+      <div style="font-size:2.5rem;margin-bottom:8px">🚨</div>
+      <h1 class="font-display" style="font-size:2.2rem;font-weight:800;margin-bottom:6px" id="emergencyTitle">Emergency Signs</h1>
+      <p style="opacity:0.9;font-weight:500" id="emergencySubtitle">Tap any sign for instant visual guidance</p>
+    </div>
+    <div class="emergency-grid" id="emergencyGrid"></div>
+    <div style="margin-top:32px;background:white;border-radius:var(--radius);padding:24px;border:1px solid var(--border)">
+      <h3 style="font-weight:800;margin-bottom:12px">📱 Offline Ready</h3>
+      <p style="color:var(--text-muted);font-weight:500;font-size:0.9rem">These emergency signs are stored locally and available even without internet connection. Tap to save to home screen for quick access.</p>
+      <button class="btn-primary" style="margin-top:12px" onclick="showToast('Emergency signs saved offline!','📥')">📥 Save Offline</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: PARENT MODE ===== -->
+<div class="page" id="page-parent">
+  <div class="parent-page">
+    <div class="parent-intro">
+      <div style="font-size:4rem">🦒</div>
+      <div class="parent-intro-text">
+        <h2 id="parentTitle">Parent Learning Mode</h2>
+        <p id="parentSubtitle">Learn to communicate with your child using Indian Sign Language — step by step, at your own pace</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px" id="parentLessons"></div>
+    <div style="margin-top:32px;background:linear-gradient(135deg,#FFF0F0,#FFF5E0);border-radius:var(--radius);padding:28px;border:1px solid #FFD0D0">
+      <h3 style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;margin-bottom:8px">👨‍👩‍👧 Parent-Child Challenge</h3>
+      <p style="color:var(--text-muted);font-weight:500;font-size:0.9rem;margin-bottom:16px">Practice signs together — the child teaches the parent! Earn bonus XP for successful family communication.</p>
+      <button class="btn-primary" onclick="showCelebration('Family Challenge Started!','Practice together and earn 2x XP!')">Start Family Challenge 🎮</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: DASHBOARD ===== -->
+<div class="page" id="page-dashboard">
+  <div class="dashboard-page">
+    <div class="progress-header">
+      <div class="user-avatar">👧</div>
+      <div class="user-info">
+        <h2>Priya Patel</h2>
+        <p>Age 9 · Level 4 Giraffe Intermediate · Preferred: Gujarati</p>
+      </div>
+      <div class="streak-badge">
+        <div class="streak-num">🔥 14</div>
+        <div class="streak-label">Day Streak</div>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-card-icon">🤟</div><div class="stat-card-val">147</div><div class="stat-card-lbl">Signs Learned</div></div>
+      <div class="stat-card"><div class="stat-card-icon">⭐</div><div class="stat-card-val">650</div><div class="stat-card-lbl">Total XP</div></div>
+      <div class="stat-card"><div class="stat-card-icon">🎯</div><div class="stat-card-val">87%</div><div class="stat-card-lbl">Accuracy</div></div>
+      <div class="stat-card"><div class="stat-card-icon">⏱️</div><div class="stat-card-val">12h</div><div class="stat-card-lbl">Practice Time</div></div>
+      <div class="stat-card"><div class="stat-card-icon">🏆</div><div class="stat-card-val">8</div><div class="stat-card-lbl">Badges Earned</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div class="progress-section">
+        <div class="progress-title">📚 Category Progress</div>
+        <div id="categoryProgress"></div>
+      </div>
+      <div class="progress-section">
+        <div class="progress-title">🏅 Badges & Achievements</div>
+        <div class="badges-grid" id="badgesGrid"></div>
+      </div>
+    </div>
+    <div class="progress-section" style="margin-top:20px">
+      <div class="progress-title">📅 Weekly Activity</div>
+      <div style="display:flex;gap:8px;align-items:flex-end;height:120px;margin-top:12px">
+        <div id="weeklyChart" style="display:flex;gap:8px;align-items:flex-end;width:100%;height:100%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: COMMUNITY ===== -->
+<div class="page" id="page-community">
+  <div class="community-page">
+    <div style="padding-top:20px;margin-bottom:28px">
+      <h1 class="font-display" style="font-size:2.2rem;font-weight:800;margin-bottom:6px">🏆 Community</h1>
+      <p style="color:var(--text-muted);font-weight:500">Compete, connect, and grow together</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px" id="communityGrid">
+      <div>
+        <h3 style="font-weight:800;margin-bottom:16px">🥇 Weekly Leaderboard</h3>
+        <div class="leaderboard" id="leaderboard"></div>
+      </div>
+      <div>
+        <h3 style="font-weight:800;margin-bottom:16px">🎯 Active Challenges</h3>
+        <div id="challengesList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: TEACHER DASHBOARD ===== -->
+<div class="page" id="page-teacher">
+  <div class="teacher-page">
+    <div style="padding-top:20px;margin-bottom:28px">
+      <h1 class="font-display" style="font-size:2.2rem;font-weight:800;margin-bottom:6px">👩‍🏫 Teacher Dashboard</h1>
+      <p style="color:var(--text-muted);font-weight:500">Monitor progress, assign lessons, and support your students</p>
+    </div>
+    <div class="teacher-cards">
+      <div class="t-stat-card" style="border-left:4px solid var(--primary)"><div class="t-stat-num" style="color:var(--primary)">28</div><div class="t-stat-lbl">Total Students</div></div>
+      <div class="t-stat-card" style="border-left:4px solid var(--success)"><div class="t-stat-num" style="color:var(--success)">21</div><div class="t-stat-lbl">Active Today</div></div>
+      <div class="t-stat-card" style="border-left:4px solid var(--warning)"><div class="t-stat-num" style="color:#B8860B">5</div><div class="t-stat-lbl">Need Attention</div></div>
+      <div class="t-stat-card" style="border-left:4px solid var(--accent3)"><div class="t-stat-num" style="color:var(--accent3)">78%</div><div class="t-stat-lbl">Avg Accuracy</div></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+      <button class="btn-primary" onclick="showToast('Lesson assigned to all students!','📚')">📚 Assign Lesson</button>
+      <button class="btn-secondary" onclick="showToast('Report generated!','📊')">📊 Generate Report</button>
+      <button class="btn-secondary" onclick="showToast('Message sent!','💬')">💬 Message All</button>
+    </div>
+    <h3 style="font-weight:800;margin-bottom:14px">Student Progress</h3>
+    <div class="student-list" id="studentList"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: LOGIN ===== -->
+<div class="page" id="page-login">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div style="text-align:center;margin-bottom:24px">
+        <div class="giraffe-mascot" style="font-size:3rem">🦒</div>
+        <h1 class="auth-title font-display" style="margin-top:8px">Welcome Back!</h1>
+        <p class="auth-subtitle">Sign in to continue your ISL journey</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" placeholder="••••••••">
+      </div>
+      <button class="btn-primary" style="width:100%;padding:14px;font-size:1rem;margin-top:4px" onclick="handleLogin()">Sign In 🚀</button>
+      <div class="auth-divider"><span>or</span></div>
+      <button class="btn-secondary" style="width:100%;padding:12px;font-size:0.95rem" onclick="handleGuestLogin()">👋 Continue as Guest</button>
+      <div class="auth-switch">Don't have an account? <a onclick="showPage('register')">Register here</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: REGISTER ===== -->
+<div class="page" id="page-register">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div style="text-align:center;margin-bottom:24px">
+        <div class="giraffe-mascot" style="font-size:3rem">🦒</div>
+        <h1 class="auth-title font-display" style="margin-top:8px">Join SignBridge</h1>
+        <p class="auth-subtitle">Start your Indian Sign Language journey today — free forever!</p>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Parent Name</label><input class="form-input" type="text" placeholder="Parent / Guardian"></div>
+        <div class="form-group"><label class="form-label">Child Name</label><input class="form-input" type="text" placeholder="Child's Name"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••"></div>
+        <div class="form-group">
+          <label class="form-label">Child's Age Group</label>
+          <select class="form-select">
+            <option>5-7 years</option><option>8-10 years</option><option>11-14 years</option><option>15+ years</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Preferred Language</label>
+        <select class="form-select">
+          <option>Gujarati</option><option>Hindi</option><option>English</option>
+        </select>
+      </div>
+      <button class="btn-primary" style="width:100%;padding:14px;font-size:1rem;margin-top:4px" onclick="handleRegister()">Create Account 🎉</button>
+      <div class="auth-switch">Already have an account? <a onclick="showPage('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== ISL DATA ==========
+const ISL_ALPHABETS = [
+  {letter:'A',sign:'🤜',steps:['Make a fist with your right hand','Thumb rests on the side of the index finger','Hold fist upright facing forward','This represents A in ISL finger spelling'],trans:{en:'A',hi:'अ',gu:'અ'}},
+  {letter:'B',sign:'✋',steps:['Hold all four fingers straight and together pointing up','Thumb tucked across the palm','Palm facing outward','Keep fingers pressed together firmly'],trans:{en:'B',hi:'ब',gu:'બ'}},
+  {letter:'C',sign:'🤏',steps:['Curve your hand like you are holding a ball','Thumb and fingers form a C shape','Open to the side, not front','Keep the curve rounded and open'],trans:{en:'C',hi:'क',gu:'ક'}},
+  {letter:'D',sign:'👆',steps:['Point index finger straight up','Touch thumb tip to middle finger tip','Ring and pinky finger curl toward palm','Keep index finger pointing upward'],trans:{en:'D',hi:'द',gu:'ડ'}},
+  {letter:'E',sign:'🤞',steps:['Bend all fingers at the middle joint','Thumb tucks under the bent fingers','All fingertips point downward slightly','Similar to a claw position'],trans:{en:'E',hi:'ए',gu:'એ'}},
+  {letter:'F',sign:'👌',steps:['Connect index finger tip to thumb tip forming a circle','Three remaining fingers point straight up','Palm faces outward','Fingers should be spread apart'],trans:{en:'F',hi:'फ',gu:'ફ'}},
+  {letter:'G',sign:'👉',steps:['Point index finger out to the side','Thumb extends parallel below the index finger','Other fingers curl into the palm','Hand held horizontally'],trans:{en:'G',hi:'ग',gu:'ગ'}},
+  {letter:'H',sign:'🤙',steps:['Extend index and middle fingers together pointing sideways','Thumb may stick out','Ring and pinky fingers curl in','Hold the two fingers horizontally'],trans:{en:'H',hi:'ह',gu:'હ'}},
+  {letter:'I',sign:'🤙',steps:['Only the pinky finger extends straight up','All other fingers curl into a fist','Thumb may fold across other fingers','Pinky faces upward clearly'],trans:{en:'I',hi:'इ',gu:'ઈ'}},
+  {letter:'J',sign:'🤟',steps:['Start with the I position (pinky up)','Then trace a J shape in the air','Move the pinky in a J motion downward and curl','The movement traces the letter J'],trans:{en:'J',hi:'ज',gu:'જ'}},
+  {letter:'K',sign:'✌️',steps:['Extend index and middle fingers in a V/scissors shape','Thumb rests between the two extended fingers','Ring and pinky fingers curl in','Palm faces outward'],trans:{en:'K',hi:'क',gu:'ક'}},
+  {letter:'L',sign:'🤙',steps:['Form an L shape with thumb and index finger','Thumb points up, index finger points forward','Other fingers curl into the palm','Clear right angle between thumb and index'],trans:{en:'L',hi:'ल',gu:'લ'}},
+  {letter:'M',sign:'🤜',steps:['Fold the index, middle, and ring fingers over the thumb','Thumb is tucked underneath these three fingers','Pinky may curl in or extend slightly','Knuckles face outward'],trans:{en:'M',hi:'म',gu:'મ'}},
+  {letter:'N',sign:'🤜',steps:['Fold the index and middle fingers over the thumb','Only two fingers (not three) fold over the thumb','Ring and pinky fingers curl in','Similar to M but with only two fingers over thumb'],trans:{en:'N',hi:'न',gu:'ન'}},
+  {letter:'O',sign:'👌',steps:['Curve all fingers to touch the thumb','All fingertips and thumb tip meet together','Creates a clear O circle shape','Facing outward toward the viewer'],trans:{en:'O',hi:'ओ',gu:'ઓ'}},
+  {letter:'P',sign:'🖖',steps:['Point index finger downward','Middle finger also extends down, parallel to index','Thumb extends to the side','Other fingers curl in — similar to K but rotated down'],trans:{en:'P',hi:'प',gu:'પ'}},
+  {letter:'Q',sign:'👇',steps:['Point index finger downward','Thumb extends parallel below, also pointing down','Other fingers curl in','Hand points downward'],trans:{en:'Q',hi:'क',gu:'ક'}},
+  {letter:'R',sign:'🤞',steps:['Cross your middle finger over your index finger','Both fingers extend upward','Thumb folds across other fingers','Ring and pinky curl in'],trans:{en:'R',hi:'र',gu:'ર'}},
+  {letter:'S',sign:'✊',steps:['Make a fist with all fingers curled','Thumb wraps over the outside of the fingers','Knuckles face outward','Fist held firmly'],trans:{en:'S',hi:'स',gu:'સ'}},
+  {letter:'T',sign:'👍',steps:['Make a fist and stick your thumb between index and middle finger','Thumb pokes through slightly','All fingers curl over the thumb','Knuckles face outward'],trans:{en:'T',hi:'त',gu:'ત'}},
+  {letter:'U',sign:'✌️',steps:['Extend the index and middle fingers together upward','Keep them pressed side by side','Thumb folds across other fingers','Ring and pinky fingers curl in'],trans:{en:'U',hi:'उ',gu:'ઉ'}},
+  {letter:'V',sign:'✌️',steps:['Extend index and middle fingers in a V spread','Fingers spread apart in a victory V shape','Thumb folds across other fingers','Ring and pinky curl in'],trans:{en:'V',hi:'व',gu:'વ'}},
+  {letter:'W',sign:'🤟',steps:['Extend index, middle, and ring fingers spread out','Thumb holds down the pinky','Three fingers spread to form W shape','Palm faces outward'],trans:{en:'W',hi:'व',gu:'વ'}},
+  {letter:'X',sign:'☝️',steps:['Extend index finger and bend it slightly at the joint','Like a crooked or hooked index finger','All other fingers curl into fist','Makes a hook shape'],trans:{en:'X',hi:'ख',gu:'ખ'}},
+  {letter:'Y',sign:'🤙',steps:['Extend your pinky and thumb out','Other three fingers curl into the palm','Hold the Y/shaka shape','Thumb and pinky clearly extended'],trans:{en:'Y',hi:'य',gu:'ય'}},
+  {letter:'Z',sign:'☝️',steps:['Point your index finger','Trace a Z shape in the air','Start at top left, go right, diagonal down-left, then right again','The movement traces the letter Z'],trans:{en:'Z',hi:'ज',gu:'ઝ'}}
+];
+
+const ISL_NUMBERS = [
+  {word:'0',sign:'👌',category:'numbers',steps:['Connect all fingertips to thumb in a circle','All fingers curve to meet thumb tip','Creates an O/zero shape','Palm faces outward'],trans:{en:'Zero',hi:'शून्य',gu:'શૂન્ય'}},
+  {word:'1',sign:'☝️',steps:['Extend index finger straight up','All other fingers curl into fist','Thumb can rest alongside','Index finger points clearly upward'],category:'numbers',trans:{en:'One',hi:'एक',gu:'એક'}},
+  {word:'2',sign:'✌️',steps:['Extend index and middle fingers up in a V','Keep fingers slightly spread','Other fingers curl in','Thumb folds across'],category:'numbers',trans:{en:'Two',hi:'दो',gu:'બે'}},
+  {word:'3',sign:'🤟',steps:['Extend thumb, index, and middle finger','Ring and pinky curl in','Three fingers clearly visible','A natural 3 count position'],category:'numbers',trans:{en:'Three',hi:'तीन',gu:'ત્રણ'}},
+  {word:'4',sign:'🖖',steps:['Extend four fingers: index, middle, ring, pinky','Thumb folds across palm','All four fingers pointing up','Keep fingers together or slightly spread'],category:'numbers',trans:{en:'Four',hi:'चार',gu:'ચાર'}},
+  {word:'5',sign:'✋',steps:['Extend all five fingers wide','Thumb also extended outward','All fingers spread open','Open hand palm facing outward'],category:'numbers',trans:{en:'Five',hi:'पाँच',gu:'પાંચ'}},
+  {word:'6',sign:'🤙',steps:['Connect thumb and pinky together touching','Other three fingers extended up','Creates a 6 handshape in ISL','Thumb touches pinky tip'],category:'numbers',trans:{en:'Six',hi:'छह',gu:'છ'}},
+  {word:'7',sign:'🤞',steps:['Connect thumb and ring finger together touching','Other fingers extended up','Creates the 7 handshape','Thumb tip touches ring finger tip'],category:'numbers',trans:{en:'Seven',hi:'सात',gu:'સાત'}},
+  {word:'8',sign:'👈',steps:['Connect thumb and middle finger touching','Index, ring, pinky fingers extend up','Creates the 8 handshape','Thumb touches middle finger tip'],category:'numbers',trans:{en:'Eight',hi:'आठ',gu:'આઠ'}},
+  {word:'9',sign:'🤞',steps:['Connect thumb and index finger touching','Other three fingers extend upward','Creates the 9 handshape in ISL','Thumb tip touches index finger tip'],category:'numbers',trans:{en:'Nine',hi:'नौ',gu:'નવ'}}
+];
+
+const ISL_WORDS = {
+  greetings: [
+    {word:'Hello',sign:'🖐️',steps:['Raise your right hand flat to the side of your head','Fingertips at forehead level','Palm facing outward','Swing hand forward slightly'],trans:{en:'Hello',hi:'नमस्ते',gu:'નમસ્તે'}},
+    {word:'Goodbye',sign:'👋',steps:['Hold hand up at shoulder level, palm outward','Wave fingers back and forth','Keep wrist relaxed','Two to three gentle waves'],trans:{en:'Goodbye',hi:'अलविदा',gu:'આવજો'}},
+    {word:'Thank You',sign:'🤲',steps:['Touch fingers of right hand to chin','Move hand forward away from chin','Flat hand, palm facing upward','Like blowing a kiss of gratitude'],trans:{en:'Thank You',hi:'धन्यवाद',gu:'આભાર'}},
+    {word:'Please',sign:'🙏',steps:['Place flat right hand on chest','Move hand in a circular motion clockwise','Keep hand flat on chest throughout','Gentle circular motion'],trans:{en:'Please',hi:'कृपया',gu:'કૃપા'}},
+    {word:'Sorry',sign:'✊',steps:['Make a fist with right hand','Move fist in circular motion over the heart area','Shows remorse and apology','Gentle circles over the chest'],trans:{en:'Sorry',hi:'माफ करें',gu:'માફ કરો'}},
+    {word:'Yes',sign:'👊',steps:['Make a fist','Nod the fist up and down at the wrist','Mimics a head nodding yes','Keep the motion smooth and natural'],trans:{en:'Yes',hi:'हाँ',gu:'હા'}},
+    {word:'No',sign:'✌️',steps:['Extend index and middle fingers together','Close them against the thumb quickly','A snapping motion of these two fingers to thumb','Quick two or three taps'],trans:{en:'No',hi:'नहीं',gu:'ના'}}
+  ],
+  family: [
+    {word:'Mother',sign:'🤱',steps:['Place open right hand fingers on chin','Fingertips touching chin','Thumb and fingers extended (five hand)','This is the female family sign location'],trans:{en:'Mother',hi:'माँ',gu:'માં'}},
+    {word:'Father',sign:'🖐️',steps:['Place open right hand fingers on forehead','Fingertips touching forehead','Thumb and fingers extended (five hand)','This is the male family sign location'],trans:{en:'Father',hi:'पिता',gu:'પિતા'}},
+    {word:'Sister',sign:'👧',steps:['Start with A handshape near chin (female location)','Move hand down to neutral space','Change to L handshape as you move down','Shows female family member, same level as you'],trans:{en:'Sister',hi:'बहन',gu:'બહેન'}},
+    {word:'Brother',sign:'👦',steps:['Start with L handshape near forehead (male location)','Move hand down to neutral space','Maintain L handshape throughout','Shows male family member, same level as you'],trans:{en:'Brother',hi:'भाई',gu:'ભાઈ'}},
+    {word:'Baby',sign:'👶',steps:['Cradle both arms together as if holding a baby','Rock arms side to side gently','Natural rocking motion','Both forearms support the imaginary baby'],trans:{en:'Baby',hi:'बच्चा',gu:'બાળક'}}
+  ],
+  food: [
+    {word:'Water',sign:'💧',steps:['Make a W handshape (3 fingers extended)','Tap the W to your chin twice','Quick double tap on the chin','W handshape represents Water'],trans:{en:'Water',hi:'पानी',gu:'પાણી'}},
+    {word:'Food',sign:'🍽️',steps:['Bring fingertips of right hand together','Touch fingertips to mouth','Flat O shape touching mouth','Represents eating/food'],trans:{en:'Food',hi:'खाना',gu:'ખાવાનું'}},
+    {word:'Milk',sign:'🥛',steps:['Make a C or squeeze handshape','Open and close fist repeatedly','Mimics milking motion','Can also do with both hands alternating'],trans:{en:'Milk',hi:'दूध',gu:'દૂધ'}},
+    {word:'Hungry',sign:'🤤',steps:['Make a C handshape at the throat','Move hand downward along center of chest','Shows the feeling of emptiness/hunger','Single downward motion from throat to stomach'],trans:{en:'Hungry',hi:'भूखा',gu:'ભૂખ્યો'}},
+    {word:'More',sign:'🤏',steps:['Bring fingertips of both hands together','Tap fingertips together twice','Both hands in flat O/O shape','Fingertips touch and tap'],trans:{en:'More',hi:'और',gu:'વધુ'}}
+  ],
+  emotions: [
+    {word:'Happy',sign:'😊',steps:['Place right hand flat on chest','Move hand upward in a circular motion','Multiple upward brushing strokes','Shows the feeling rising from the heart'],trans:{en:'Happy',hi:'खुश',gu:'ખુश'}},
+    {word:'Sad',sign:'😢',steps:['Place both open hands near your face','Move both hands downward past cheeks','Mimics tears flowing down face','Facial expression should match'],trans:{en:'Sad',hi:'दुखी',gu:'દુઃખી'}},
+    {word:'Angry',sign:'😤',steps:['Place both bent hands in front of face','Move both hands away from face with tension','Scrunch face for facial expression','Claw handshapes in front of face'],trans:{en:'Angry',hi:'गुस्सा',gu:'ગુસ્સો'}},
+    {word:'Love',sign:'🤗',steps:['Cross both arms over chest in an X','Hands make fists or flat hands','Hugging yourself position','Hold the position briefly'],trans:{en:'Love',hi:'प्यार',gu:'પ્રેમ'}},
+    {word:'Scared',sign:'😱',steps:['Both hands open, fingers spread','Bring both hands in quickly toward center chest','Quick movement showing startle','Facial expression of fear'],trans:{en:'Scared',hi:'डरा हुआ',gu:'ડર'}}
+  ],
+  animals: [
+    {word:'Cat',sign:'🐱',steps:['Place both F handshapes at cheeks','Pull hands outward to the sides','Mimics pulling cat whiskers','Smooth outward motion from cheeks'],trans:{en:'Cat',hi:'बिल्ली',gu:'બિલ્લી'}},
+    {word:'Dog',sign:'🐕',steps:['Pat your thigh with your right hand','Then snap your fingers','Calling a dog motion','Pat-snap is the standard dog sign'],trans:{en:'Dog',hi:'कुत्ता',gu:'કૂતરો'}},
+    {word:'Bird',sign:'🐦',steps:['Place G or closed hand at mouth','Open and close index finger and thumb','Mimics a beak opening and closing','At the mouth position'],trans:{en:'Bird',hi:'पक्षी',gu:'પક્ષી'}}
+  ],
+  school: [
+    {word:'School',sign:'🏫',steps:['Clap hands together two to three times','Both hands flat, clap at chest level','Teacher clapping to get attention','Two to three clear claps'],trans:{en:'School',hi:'स्कूल',gu:'શાળા'}},
+    {word:'Teacher',sign:'👩‍🏫',steps:['Place both flat hands at temples with palms out','Move both hands forward away from head','Shows sharing/giving knowledge from the mind','Both hands move forward simultaneously'],trans:{en:'Teacher',hi:'अध्यापक',gu:'શિક્ષક'}},
+    {word:'Learn',sign:'📚',steps:['Place open hand palm up','Bring hand up to forehead','Fingers close as hand moves to forehead','Taking information from a surface to your mind'],trans:{en:'Learn',hi:'सीखना',gu:'શીખવું'}},
+    {word:'Book',sign:'📖',steps:['Place both hands palm to palm','Open hands like opening a book','Hands act as the covers of a book','Open and close motion'],trans:{en:'Book',hi:'किताब',gu:'પુસ્તક'}},
+    {word:'Write',sign:'✍️',steps:['Pinch right fingers together like holding a pen','Move hand in a writing motion','Write on the left palm as the paper','Mimics writing on paper'],trans:{en:'Write',hi:'लिखना',gu:'લખવું'}}
+  ],
+  actions: [
+    {word:'Help',sign:'🤝',steps:['Place right A handshape on left flat palm','Lift both hands together upward','Right fist resting on left palm, both rise','Shows lifting/supporting someone'],trans:{en:'Help',hi:'मदद',gu:'મદદ'}},
+    {word:'Stop',sign:'✋',steps:['Hold left hand flat, palm facing up','Bring right hand down sharply onto left palm','Karate chop onto the left hand','Sharp single motion'],trans:{en:'Stop',hi:'रुको',gu:'રોકો'}},
+    {word:'Go',sign:'👉',steps:['Hold both index fingers pointing forward','Move both hands forward in a rolling/going motion','Both index fingers arc forward','Shows moving forward/going'],trans:{en:'Go',hi:'जाओ',gu:'જાઓ'}},
+    {word:'Come',sign:'🫵',steps:['Hold one or both index fingers pointing up','Curve them toward yourself','Beckoning motion inward','Drawing someone toward you'],trans:{en:'Come',hi:'आओ',gu:'આવો'}},
+    {word:'Sleep',sign:'😴',steps:['Hold one hand open with fingers spread wide near face','Close fingers as hand moves down slightly','Then rest cheek on closed hand','Eyes close as the sign completes'],trans:{en:'Sleep',hi:'सोना',gu:'ઊંઘ'}}
+  ],
+  emergency: [
+    {word:'Help',sign:'🆘',steps:['A handshape on flat left palm','Lift both upward urgently','Urgent upward lifting motion','Both hands rise together'],trans:{en:'HELP',hi:'मदद करो',gu:'મદદ'}},
+    {word:'Pain',sign:'😣',steps:['Point both index fingers toward each other','Move them back and forth toward the painful area','Twist motion near the area of pain','Indicates something hurting'],trans:{en:'Pain',hi:'दर्द',gu:'દર્દ'}},
+    {word:'Danger',sign:'⚠️',steps:['Right A handshape slides up over left A handshape','Slide right hand upward and outward','Both hands in fist, one slides up','Warning/danger signal'],trans:{en:'Danger',hi:'खतरा',gu:'ખતરો'}},
+    {word:'Medicine',sign:'💊',steps:['Place right middle finger on left palm','Move middle finger in a small stirring circle','Mixing medicine motion on palm','Using the middle finger specifically'],trans:{en:'Medicine',hi:'दवाई',gu:'દવા'}},
+    {word:'Sick',sign:'🤒',steps:['Touch right middle finger to forehead','Touch left middle finger to stomach','Both middle fingers touch these two spots','Indicates feeling unwell'],trans:{en:'Sick',hi:'बीमार',gu:'બીમાર'}},
+    {word:'Washroom',sign:'🚻',steps:['Make a W or R handshape','Move hand with a shaking motion','R shaking side to side','Standard bathroom sign'],trans:{en:'Washroom',hi:'शौचालय',gu:'ટોઇલેટ'}},
+    {word:'Home',sign:'🏠',steps:['Touch fingertips to mouth','Then move to touch cheek/temple','Two distinct touches: eating and sleeping locations','Home is where you eat and sleep'],trans:{en:'Home',hi:'घर',gu:'ઘર'}},
+    {word:'Hungry',sign:'😫',steps:['C handshape at throat','Move downward to stomach','One fluid downward motion','Feeling of emptiness inside'],trans:{en:'Hungry',hi:'भूखा',gu:'ભૂખ'}}
+  ]
+};
+
+const CATEGORIES = [
+  {id:'alphabets',label:'Alphabets A-Z',icon:'🔤'},
+  {id:'numbers',label:'Numbers 0-9',icon:'🔢'},
+  {id:'greetings',label:'Greetings',icon:'👋'},
+  {id:'family',label:'Family',icon:'👨‍👩‍👧'},
+  {id:'food',label:'Food',icon:'🍎'},
+  {id:'emotions',label:'Emotions',icon:'😊'},
+  {id:'animals',label:'Animals',icon:'🐾'},
+  {id:'school',label:'School',icon:'🏫'},
+  {id:'actions',label:'Actions',icon:'🏃'},
+  {id:'emergency',label:'Emergency',icon:'🚨'}
+];
+
+const LANG_DATA = {
+  en: {
+    heroSubtitle: 'SignBridge brings Indian Sign Language to every home, classroom, and family — with AI-powered translation, gamified learning, and full Gujarati, Hindi & English support.',
+    lessonsSubtitle: 'Learn authentic Indian Sign Language step by step',
+    transTitle: 'ISL Translator',
+    transSubtitle: 'Two-way real-time communication powered by AI',
+    practiceTitle: 'Practice Zone',
+    practiceSubtitle: 'Games, flashcards, and challenges to master ISL',
+    emergencyTitle: 'Emergency Signs',
+    emergencySubtitle: 'Tap any sign for instant visual guidance',
+    parentTitle: 'Parent Learning Mode',
+    parentSubtitle: 'Learn to communicate with your child using Indian Sign Language'
+  },
+  hi: {
+    heroSubtitle: 'SignBridge भारतीय सांकेतिक भाषा को हर घर, कक्षा और परिवार तक लाता है — AI अनुवाद, गेमीफाइड लर्निंग और गुजराती, हिंदी और अंग्रेजी समर्थन के साथ।',
+    lessonsSubtitle: 'भारतीय सांकेतिक भाषा कदम दर कदम सीखें',
+    transTitle: 'ISL अनुवादक',
+    transSubtitle: 'AI द्वारा संचालित दो-तरफा रियल-टाइम संचार',
+    practiceTitle: 'अभ्यास क्षेत्र',
+    practiceSubtitle: 'ISL में महारत हासिल करने के लिए गेम्स और फ्लैशकार्ड',
+    emergencyTitle: 'आपातकालीन संकेत',
+    emergencySubtitle: 'त्वरित दृश्य मार्गदर्शन के लिए किसी भी संकेत पर टैप करें',
+    parentTitle: 'अभिभावक शिक्षण मोड',
+    parentSubtitle: 'भारतीय सांकेतिक भाषा का उपयोग करके अपने बच्चे के साथ संवाद करना सीखें'
+  },
+  gu: {
+    heroSubtitle: 'SignBridge ભારતીય સાંકેતિક ભાષાને દરેક ઘર, વર્ગ અને પરિવાર સુધી લાવે છે — AI અનુવાદ, ગેમિફાઇડ લર્નિંગ અને ગુજરાતી, હિન્દી અને અંગ્રેજી સમર્થન સાથે.',
+    lessonsSubtitle: 'ભારતીય સાંકેતિક ભાષા પગલે પગલે શીખો',
+    transTitle: 'ISL અનુવાદક',
+    transSubtitle: 'AI દ્વારા સંચાલિત દ્વિ-માર્ગીય રીઅલ-ટાઇમ સંચાર',
+    practiceTitle: 'પ્રેક્ટિસ ઝોન',
+    practiceSubtitle: 'ISL નિપુણ બનવા માટે ગેમ્સ અને ફ્લેશકાર્ડ',
+    emergencyTitle: 'કટોકટીના સંકેતો',
+    emergencySubtitle: 'ત્વરિત દ્રશ્ય માર્ગદર્શન માટે કોઈ પણ સંકેત પર ટૅપ કરો',
+    parentTitle: 'વાલી શિક્ષણ મોડ',
+    parentSubtitle: 'ભારતીય સાંકેતિક ભાષાનો ઉપયોગ કરીને તમારા બાળક સાથે વાતચીત કરો'
+  }
+};
+
+// ========== STATE ==========
+let currentLang = 'en';
+let currentCategory = 'alphabets';
+let currentSignData = null;
+let cameraStream = null;
+let cameraOn = false;
+let fcIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+let learnedSigns = new Set();
+let userXP = 650;
+let recognitionActive = false;
+let speechSynth = window.speechSynthesis;
+let voiceRecognition = null;
+
+// ========== INIT ==========
+function init() {
+  renderAlphabetPreview();
+  renderCategoryTabs();
+  renderLessonGrid('alphabets');
+  renderEmergencyGrid();
+  renderParentLessons();
+  renderDashboard();
+  renderCommunity();
+  renderTeacherStudents();
+  initVoiceRecognition();
+  checkOfflineStatus();
+}
+
+function checkOfflineStatus() {
+  window.addEventListener('offline', () => document.getElementById('offlineBanner').classList.add('show'));
+  window.addEventListener('online', () => document.getElementById('offlineBanner').classList.remove('show'));
+}
+
+// ========== NAVIGATION ==========
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const el = document.getElementById('page-' + page);
+  if (el) el.classList.add('active');
+  const navMap = {home:0,lessons:1,translator:2,practice:3,emergency:4,parent:5,dashboard:6,community:7,teacher:8};
+  const navLinks = document.querySelectorAll('.nav-link');
+  if (navMap[page] !== undefined) navLinks[navMap[page]]?.classList.add('active');
+  window.scrollTo(0,0);
+  if (page === 'practice') document.querySelectorAll('.flashcard-game,.quiz-game').forEach(g=>g.classList.remove('active'));
+}
+
+// ========== LANGUAGE ==========
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => { if (b.textContent === (lang==='en'?'EN':lang==='hi'?'हि':'ગુ')) b.classList.add('active'); });
+  const data = LANG_DATA[lang];
+  Object.keys(data).forEach(key => {
+    const el = document.getElementById(key);
+    if (el) el.textContent = data[key];
+  });
+}
+
+// ========== RENDER ALPHABETS ==========
+function renderAlphabetPreview() {
+  const grid = document.getElementById('alphabetPreview');
+  if (!grid) return;
+  grid.innerHTML = ISL_ALPHABETS.slice(0,13).map(a => `
+    <div class="sign-card ${learnedSigns.has('letter-'+a.letter)?'learned':''}" onclick="openLessonModal(${JSON.stringify({...a,category:'alphabets'}).replace(/"/g,'&quot;')})">
+      <div class="sign-img">${a.sign}</div>
+      <div class="sign-label">${a.letter}</div>
+      <div class="sign-sublabel">${a.trans[currentLang]||a.trans.en}</div>
+    </div>`).join('');
+}
+
+// ========== CATEGORIES & LESSONS ==========
+function renderCategoryTabs() {
+  const tabs = document.getElementById('categoryTabs');
+  if (!tabs) return;
+  tabs.innerHTML = CATEGORIES.map(c => `
+    <button class="cat-tab ${c.id===currentCategory?'active':''}" onclick="setCategory('${c.id}')">${c.icon} ${c.label}</button>`).join('');
+}
+
+function setCategory(cat) {
+  currentCategory = cat;
+  renderCategoryTabs();
+  renderLessonGrid(cat);
+}
+
+function getLessonData(cat) {
+  if (cat === 'alphabets') return ISL_ALPHABETS.map(a => ({...a, category:'alphabets'}));
+  if (cat === 'numbers') return ISL_NUMBERS;
+  return (ISL_WORDS[cat] || []).map(w => ({...w, letter:w.word}));
+}
+
+function renderLessonGrid(cat) {
+  const grid = document.getElementById('lessonSignGrid');
+  if (!grid) return;
+  const data = getLessonData(cat);
+  grid.innerHTML = data.map((item, i) => `
+    <div class="sign-card ${learnedSigns.has(cat+'-'+i)?'learned':''}" onclick='openLessonModalRaw(${JSON.stringify({...item,_cat:cat,_idx:i})})'>
+      <div class="sign-img">${item.sign}</div>
+      <div class="sign-label">${item.letter||item.word}</div>
+      <div class="sign-sublabel">${item.trans?.[currentLang]||item.trans?.en||''}</div>
+      ${learnedSigns.has(cat+'-'+i)?'<div style="font-size:0.7rem;color:var(--success);font-weight:700;margin-top:4px">✅ Learned</div>':''}
+    </div>`).join('');
+}
+
+function openLessonModal(data) { openLessonModalRaw(data); }
+function openLessonModalRaw(data) {
+  currentSignData = data;
+  document.getElementById('modalSignImg').textContent = data.sign;
+  document.getElementById('modalTitle').textContent = data.letter || data.word;
+  document.getElementById('modalTranslation').textContent =
+    `${data.trans?.hi||''} / ${data.trans?.gu||''} / ${data.trans?.en||''}`;
+  document.getElementById('modalSteps').innerHTML = (data.steps||[]).map((s,i) =>
+    `<li class="sign-step"><span class="step-num">${i+1}</span><span class="step-text">${s}</span></li>`).join('');
+  document.getElementById('lessonModal').classList.add('open');
+}
+
+function closeLessonModal() { document.getElementById('lessonModal').classList.remove('open'); }
+
+function markLearned() {
+  if (!currentSignData) return;
+  const key = (currentSignData._cat||currentSignData.category||'misc')+'-'+(currentSignData._idx||0);
+  learnedSigns.add(key);
+  addXP(20);
+  closeLessonModal();
+  renderLessonGrid(currentCategory);
+  showCelebration('Sign Learned! 🎉', `+20 XP! You've learned "${currentSignData.letter||currentSignData.word}"`);
+}
+
+function speakCurrentSign() {
+  if (!currentSignData) return;
+  const text = currentSignData.trans?.en || currentSignData.letter || '';
+  speakText(text);
+}
+
+// ========== EMERGENCY ==========
+function renderEmergencyGrid() {
+  const grid = document.getElementById('emergencyGrid');
+  if (!grid) return;
+  const emergencyData = ISL_WORDS.emergency;
+  grid.innerHTML = emergencyData.map(item => `
+    <div class="emergency-card" onclick='openLessonModalRaw(${JSON.stringify({...item,letter:item.word})})'>
+      <div class="emergency-icon">${item.sign}</div>
+      <div class="emergency-word">${item.word}</div>
+      <div class="emergency-sign-hint">${item.trans?.[currentLang]||item.trans?.en||''}</div>
+    </div>`).join('');
+}
+
+// ========== PARENT LESSONS ==========
+function renderParentLessons() {
+  const container = document.getElementById('parentLessons');
+  if (!container) return;
+  const parentCategories = [
+    {title:'Daily Communication',icon:'🗣️',desc:'Water, food, medicine, home — the most important daily signs',words:['Water','Food','Medicine','Home'],signs:['💧','🍽️','💊','🏠'],color:'#EDE9FF'},
+    {title:'Emotions & Feelings',icon:'❤️',desc:'Help your child express how they feel',words:['Happy','Sad','Scared','Love'],signs:['😊','😢','😱','🤗'],color:'#FFF0F0'},
+    {title:'School Signs',icon:'📚',desc:'Support your child\'s education with school vocabulary',words:['School','Teacher','Learn','Help'],signs:['🏫','👩‍🏫','📚','🤝'],color:'#F0FFF4'},
+    {title:'Emergency Signs',icon:'🚨',desc:'Critical signs every parent must know',words:['Help','Pain','Sick','Danger'],signs:['🆘','😣','🤒','⚠️'],color:'#FFF5E0'}
+  ];
+  container.innerHTML = parentCategories.map(cat => `
+    <div style="background:white;border-radius:var(--radius);padding:24px;border:1px solid var(--border);box-shadow:var(--shadow)">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="width:48px;height:48px;border-radius:14px;background:${cat.color};display:flex;align-items:center;justify-content:center;font-size:1.4rem">${cat.icon}</div>
+        <div><div style="font-weight:800;font-size:1rem">${cat.title}</div><div style="font-size:0.8rem;color:var(--text-muted);font-weight:500">${cat.desc}</div></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        ${cat.words.map((w,i)=>`<div style="background:${cat.color};border-radius:10px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px" onclick="showToast('${w}: ${cat.signs[i]}','🤟')">${cat.signs[i]} ${w}</div>`).join('')}
+      </div>
+      <button style="margin-top:14px;width:100%" class="btn-primary" onclick="showCelebration('Lesson Started!','Learn ${cat.title} signs with your child!')">Start Lesson →</button>
+    </div>`).join('');
+}
+
+// ========== DASHBOARD ==========
+function renderDashboard() {
+  const cp = document.getElementById('categoryProgress');
+  if (cp) {
+    const progData = [{name:'Alphabets',val:85},{name:'Numbers',val:100},{name:'Greetings',val:71},{name:'Family',val:60},{name:'Food',val:45},{name:'Emotions',val:30}];
+    cp.innerHTML = progData.map(p => `
+      <div class="progress-item">
+        <div class="progress-item-label"><span>${p.name}</span><span style="color:var(--primary)">${p.val}%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${p.val}%"></div></div>
+      </div>`).join('');
+  }
+  const bg = document.getElementById('badgesGrid');
+  if (bg) {
+    const badges = [
+      {icon:'⭐',earned:true},{icon:'🔥',earned:true},{icon:'🏆',earned:true},{icon:'🦒',earned:true},
+      {icon:'💎',earned:true},{icon:'🌟',earned:true},{icon:'🎯',earned:true},{icon:'📚',earned:true},
+      {icon:'🚀',earned:false},{icon:'👑',earned:false},{icon:'🌈',earned:false},{icon:'💫',earned:false}
+    ];
+    bg.innerHTML = badges.map(b=>`<div class="badge ${b.earned?'earned':'locked'}">${b.icon}</div>`).join('');
+  }
+  const wc = document.getElementById('weeklyChart');
+  if (wc) {
+    const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const vals = [45,72,30,88,65,92,55];
+    const max = Math.max(...vals);
+    wc.innerHTML = days.map((d,i)=>`
+      <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:6px">
+        <div style="flex:1;width:100%;display:flex;align-items:flex-end">
+          <div style="width:100%;height:${Math.round(vals[i]/max*100)}%;background:linear-gradient(180deg,var(--primary),#8B7CF6);border-radius:6px 6px 0 0;transition:height 1s ease;min-height:4px"></div>
+        </div>
+        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted)">${d}</span>
+      </div>`).join('');
+  }
+}
+
+// ========== COMMUNITY ==========
+function renderCommunity() {
+  const lb = document.getElementById('leaderboard');
+  if (lb) {
+    const users = [
+      {name:'Arjun Sharma',avatar:'👦',xp:1240,rank:1},
+      {name:'Priya Patel',avatar:'👧',xp:980,rank:2},
+      {name:'Sneha Gupta',avatar:'👩',xp:875,rank:3},
+      {name:'Ravi Kumar',avatar:'🧒',xp:720,rank:4},
+      {name:'Ananya Singh',avatar:'👧',xp:650,rank:5}
+    ];
+    lb.innerHTML = users.map(u=>`
+      <div class="lb-row">
+        <div class="lb-rank ${u.rank<=3?'top3':''}">${u.rank<=3?['🥇','🥈','🥉'][u.rank-1]:u.rank}</div>
+        <div class="lb-avatar">${u.avatar}</div>
+        <div class="lb-name">${u.name}</div>
+        <div class="lb-xp">${u.xp} XP</div>
+      </div>`).join('');
+  }
+  const cl = document.getElementById('challengesList');
+  if (cl) {
+    const challenges = [
+      {title:'Alphabet Sprint',desc:'Learn all 26 alphabets this week',xp:200,ends:'3 days',icon:'🔤'},
+      {title:'Family Phrases',desc:'Master 10 family communication signs',xp:150,ends:'5 days',icon:'👨‍👩‍👧'},
+      {title:'Emergency Ready',desc:'Practice all emergency signs 3 times',xp:100,ends:'Today',icon:'🚨'}
+    ];
+    cl.innerHTML = challenges.map(c=>`
+      <div style="background:white;border-radius:var(--radius-sm);padding:20px;border:1px solid var(--border);margin-bottom:14px;box-shadow:var(--shadow)">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <span style="font-size:1.8rem">${c.icon}</span>
+          <div><div style="font-weight:800;font-size:0.95rem">${c.title}</div><div style="font-size:0.8rem;color:var(--text-muted);font-weight:500">${c.desc}</div></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:0.8rem;font-weight:700;color:var(--primary)">+${c.xp} XP · Ends: ${c.ends}</span>
+          <button class="btn-primary" style="padding:8px 16px;font-size:0.8rem" onclick="showCelebration('Challenge Joined!','Complete it to earn ${c.xp} XP!')">Join</button>
+        </div>
+      </div>`).join('');
+  }
+}
+
+// ========== TEACHER STUDENTS ==========
+function renderTeacherStudents() {
+  const sl = document.getElementById('studentList');
+  if (!sl) return;
+  const students = [
+    {name:'Aarav Shah',avatar:'👦',progress:85,level:'Advanced',status:'good'},
+    {name:'Diya Patel',avatar:'👧',progress:72,level:'Intermediate',status:'good'},
+    {name:'Rohan Mehta',avatar:'🧒',progress:45,level:'Beginner',status:'avg'},
+    {name:'Kavya Singh',avatar:'👩',progress:91,level:'Advanced',status:'good'},
+    {name:'Aryan Gupta',avatar:'👦',progress:23,level:'Beginner',status:'needs'},
+    {name:'Ishaan Joshi',avatar:'🧒',progress:60,level:'Intermediate',status:'avg'}
+  ];
+  const statusLabel = {good:'On Track',avg:'Average',needs:'Needs Help'};
+  sl.innerHTML = `<div class="s-row" style="background:var(--bg);font-size:0.8rem;font-weight:700;color:var(--text-muted)">
+    <span>Avatar</span><span>Student</span><div class="mini-bar" style="background:transparent"><span>Progress</span></div><span>Status</span></div>` +
+    students.map(s=>`
+    <div class="s-row">
+      <div class="s-avatar">${s.avatar}</div>
+      <div><div class="s-name">${s.name}</div><div class="s-progress">${s.level}</div></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="mini-bar"><div class="mini-fill" style="width:${s.progress}%"></div></div>
+        <span style="font-size:0.8rem;font-weight:700">${s.progress}%</span>
+      </div>
+      <span class="s-badge-pill ${s.status}">${statusLabel[s.status]}</span>
+    </div>`).join('');
+}
+
+// ========== CAMERA / SIGN DETECTION ==========
+async function toggleCamera() {
+  const btn = document.getElementById('camBtn');
+  const video = document.getElementById('videoEl');
+  const placeholder = document.getElementById('camPlaceholder');
+  const captureBtn = document.getElementById('captureBtn');
+  if (!cameraOn) {
+    try {
+      cameraStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+      video.srcObject = cameraStream;
+      video.style.display = 'block';
+      placeholder.style.display = 'none';
+      ['cg1','cg2','cg3','cg4'].forEach(id=>document.getElementById(id).style.display='block');
+      btn.textContent = '⏹️ Stop Camera';
+      captureBtn.disabled = false;
+      cameraOn = true;
+      showToast('Camera started! Hold your sign in frame','📷');
+    } catch(e) {
+      showToast('Camera permission needed. Using demo mode.','⚠️');
+    }
+  } else {
+    if (cameraStream) cameraStream.getTracks().forEach(t=>t.stop());
+    video.style.display = 'none';
+    placeholder.style.display = 'flex';
+    ['cg1','cg2','cg3','cg4'].forEach(id=>document.getElementById(id).style.display='none');
+    btn.textContent = '📷 Start Camera';
+    captureBtn.disabled = true;
+    cameraOn = false;
+  }
+}
+
+function captureAndAnalyze() {
+  const result = document.getElementById('detectionResult');
+  result.innerHTML = '<div class="spinner"></div><p style="text-align:center;color:var(--text-muted);font-size:0.9rem;font-weight:600">Analyzing sign via AI...</p>';
+  setTimeout(() => simulateDetection(), 1800);
+}
+
+function simulateDetection() {
+  const signs = [
+    {sign:'Hello 👋',en:'Hello',hi:'नमस्ते',gu:'નમસ્તે'},
+    {sign:'Thank You 🙏',en:'Thank You',hi:'धन्यवाद',gu:'આભાર'},
+    {sign:'Water 💧',en:'Water',hi:'पानी',gu:'પાણી'},
+    {sign:'Help 🆘',en:'Help',hi:'मदद',gu:'મદદ'},
+    {sign:'Happy 😊',en:'Happy',hi:'खुश',gu:'ખુश'},
+    {sign:'School 🏫',en:'School',hi:'स्कूल',gu:'શાળા'}
+  ];
+  const detected = signs[Math.floor(Math.random()*signs.length)];
+  const result = document.getElementById('detectionResult');
+  const transOut = document.getElementById('translationOutput');
+  result.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+      <span style="font-size:2.5rem">${detected.sign.split(' ')[1]||'🤚'}</span>
+      <div>
+        <div class="detected-text">${detected.en}</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);font-weight:600;margin-top:2px">Detected with 94% confidence</div>
+      </div>
+    </div>
+    <div style="background:var(--primary-light);border-radius:8px;padding:8px 14px;display:inline-block;font-size:0.8rem;font-weight:700;color:var(--primary)">✅ ISL Sign Recognized</div>`;
+  transOut.innerHTML = `
+    <div style="margin-bottom:10px"><span style="font-size:0.8rem;font-weight:700;color:var(--text-muted)">🇬🇧 English</span><br><span style="font-size:1.1rem;font-weight:800">${detected.en}</span></div>
+    <div style="margin-bottom:10px"><span style="font-size:0.8rem;font-weight:700;color:var(--text-muted)">🇮🇳 Hindi</span><br><span style="font-size:1.1rem;font-weight:800">${detected.hi}</span></div>
+    <div><span style="font-size:0.8rem;font-weight:700;color:var(--text-muted)">🟧 Gujarati</span><br><span style="font-size:1.1rem;font-weight:800">${detected.gu}</span></div>`;
+  document.getElementById('speakResultBtn').style.display = 'flex';
+  document.getElementById('speakResultBtn').dataset.text = detected.en;
+  addXP(5);
+  showToast('Sign detected! +5 XP','🤟');
+}
+
+// ========== TEXT TO SIGN (API-POWERED) ==========
+async function convertTextToSign() {
+  const text = document.getElementById('textInput').value.trim();
+  if (!text) { showToast('Please enter some text first','⚠️'); return; }
+  const output = document.getElementById('signSequenceOutput');
+  const explanation = document.getElementById('signExplanation');
+  const stepsOut = document.getElementById('signStepsOutput');
+  output.innerHTML = '<div class="spinner"></div><p style="text-align:center;color:var(--text-muted);font-size:0.9rem;padding:10px">AI is generating ISL sign sequence...</p>';
+  explanation.style.display = 'none';
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: `You are an Indian Sign Language (ISL) expert. The user has typed: "${text}"
+
+Please:
+1. Identify the key words/concepts to sign in ISL
+2. For each word/concept, provide the ISL sign description as a JSON array
+
+Respond ONLY with a JSON object like this (no other text, no markdown):
+{
+  "translated_text_en": "English translation",
+  "translated_text_hi": "Hindi translation",
+  "translated_text_gu": "Gujarati translation",
+  "sign_sequence": [
+    {"word": "HELLO", "emoji": "🖐️", "instruction": "Raise flat hand to side of head, palm outward, swing forward"},
+    {"word": "I", "emoji": "☝️", "instruction": "Point index finger to yourself (chest)"},
+    {"word": "HUNGRY", "emoji": "🤤", "instruction": "C-shape at throat, move downward to stomach"}
+  ],
+  "full_instruction": "Step by step: First sign HELLO by raising your flat right hand to the side of your forehead..."
+}`
+        }]
+      })
+    });
+    const data = await response.json();
+    const rawText = data.content?.map(b=>b.text||'').join('') || '';
+    let parsed;
+    try {
+      const clean = rawText.replace(/```json|```/g,'').trim();
+      parsed = JSON.parse(clean);
+    } catch(e) {
+      parsed = generateFallbackSigns(text);
+    }
+    renderSignSequence(parsed, output, explanation, stepsOut);
+    document.getElementById('speakTextBtn').style.display = 'flex';
+    document.getElementById('speakTextBtn').dataset.text = parsed.translated_text_en || text;
+    addXP(10);
+  } catch(e) {
+    const fallback = generateFallbackSigns(text);
+    renderSignSequence(fallback, output, explanation, stepsOut);
+    document.getElementById('speakTextBtn').style.display = 'flex';
+    document.getElementById('speakTextBtn').dataset.text = text;
+  }
+}
+
+function generateFallbackSigns(text) {
+  const words = text.toUpperCase().split(/\s+/).filter(Boolean).slice(0,8);
+  const signMap = {
+    'HELLO':'🖐️','HI':'👋','THANK':'🙏','YOU':'🫵','WATER':'💧','FOOD':'🍽️','HELP':'🆘',
+    'I':'☝️','AM':'✊','HUNGRY':'🤤','HAPPY':'😊','SAD':'😢','LOVE':'🤗','NO':'✌️',
+    'YES':'👊','PLEASE':'🙏','SORRY':'✊','GOOD':'👍','BYE':'👋','SCHOOL':'🏫',
+    'PAIN':'😣','SICK':'🤒','DANGER':'⚠️','MEDICINE':'💊','STOP':'✋','GO':'👉',
+    'COME':'🫵','SLEEP':'😴','MORE':'🤏','HOME':'🏠','LEARN':'📚','BOOK':'📖'
+  };
+  return {
+    translated_text_en: text,
+    translated_text_hi: text,
+    translated_text_gu: text,
+    sign_sequence: words.map(w=>({word:w, emoji:signMap[w]||'🤚', instruction:`Sign for "${w}" — perform the standard ISL gesture for this word`})),
+    full_instruction: `Sign each word in sequence: ${words.join(' → ')}`
+  };
+}
+
+function renderSignSequence(parsed, output, explanation, stepsOut) {
+  if (!parsed.sign_sequence?.length) {
+    output.innerHTML = '<p style="color:var(--text-muted);font-weight:500">Could not generate sign sequence.</p>';
+    return;
+  }
+  output.innerHTML = `
+    <div style="margin-bottom:12px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;font-size:0.85rem">
+        <div style="background:#F8F7FF;border-radius:8px;padding:8px 12px"><span style="font-weight:700;color:var(--text-muted)">EN: </span>${parsed.translated_text_en||''}</div>
+        <div style="background:#FFF8F0;border-radius:8px;padding:8px 12px"><span style="font-weight:700;color:var(--text-muted)">हि: </span>${parsed.translated_text_hi||''}</div>
+        <div style="background:#F0FFF4;border-radius:8px;padding:8px 12px;grid-column:span 2"><span style="font-weight:700;color:var(--text-muted)">ગુ: </span>${parsed.translated_text_gu||''}</div>
+      </div>
+    </div>
+    <div class="sign-sequence">
+    ${parsed.sign_sequence.map((s,i)=>`
+      <div class="sign-seq-card" style="animation-delay:${i*0.08}s">
+        <div class="sign-seq-img">${s.emoji}</div>
+        <div class="sign-seq-label">${s.word}</div>
+      </div>`).join('')}
+    </div>`;
+  if (parsed.full_instruction) {
+    explanation.style.display = 'block';
+    stepsOut.innerHTML = parsed.full_instruction.replace(/\n/g,'<br>');
+  }
+  showToast('ISL signs generated! +10 XP','🤟');
+}
+
+function speakResult() {
+  const btn = document.getElementById('speakResultBtn');
+  speakText(btn.dataset.text || '');
+}
+function speakTranslation() {
+  const btn = document.getElementById('speakTextBtn');
+  speakText(btn.dataset.text || '');
+}
+
+function speakText(text) {
+  if (!speechSynth) return;
+  speechSynth.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = currentLang === 'hi' ? 'hi-IN' : currentLang === 'gu' ? 'gu-IN' : 'en-IN';
+  utt.rate = 0.9; utt.pitch = 1;
+  speechSynth.speak(utt);
+}
+
+// ========== VOICE INPUT ==========
+function initVoiceRecognition() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return;
+  voiceRecognition = new SR();
+  voiceRecognition.continuous = false;
+  voiceRecognition.interimResults = true;
+  voiceRecognition.onresult = (e) => {
+    const transcript = Array.from(e.results).map(r=>r[0].transcript).join('');
+    const inp = document.getElementById('textInput');
+    if (inp) inp.value = transcript;
+    if (e.results[0].isFinal) {
+      convertTextToSign();
+      stopVoiceInput();
+    }
+  };
+  voiceRecognition.onerror = () => stopVoiceInput();
+  voiceRecognition.onend = () => stopVoiceInput();
+}
+
+let voiceInputActive = false;
+function toggleVoiceInput() {
+  if (!voiceRecognition) { showToast('Voice input not supported in this browser','⚠️'); return; }
+  if (!voiceInputActive) {
+    voiceRecognition.lang = currentLang==='hi'?'hi-IN':currentLang==='gu'?'gu-IN':'en-IN';
+    voiceRecognition.start();
+    voiceInputActive = true;
+    document.getElementById('voiceInputBtn').classList.add('recording');
+    showToast('Listening... speak now','🎙️');
+  } else stopVoiceInput();
+}
+function stopVoiceInput() {
+  if (voiceRecognition && voiceInputActive) { try{ voiceRecognition.stop(); }catch(e){} }
+  voiceInputActive = false;
+  const btn = document.getElementById('voiceInputBtn');
+  if (btn) btn.classList.remove('recording');
+}
+
+let mainVoiceActive = false;
+function toggleVoiceSpeech() {
+  const btn = document.getElementById('mainVoiceBtn');
+  const status = document.getElementById('voiceStatus');
+  if (!voiceRecognition) { status.textContent = 'Voice input not supported'; return; }
+  if (!mainVoiceActive) {
+    voiceRecognition.lang = currentLang==='hi'?'hi-IN':currentLang==='gu'?'gu-IN':'en-IN';
+    voiceRecognition.onresult = (e) => {
+      const t = Array.from(e.results).map(r=>r[0].transcript).join('');
+      status.textContent = `Heard: "${t}"`;
+      if (e.results[0].isFinal) {
+        document.getElementById('textInput').value = t;
+        showPage('translator');
+        switchTranslator('text2sign');
+        setTimeout(()=>convertTextToSign(),300);
+        mainVoiceActive = false;
+        btn.classList.remove('recording');
+      }
+    };
+    voiceRecognition.start();
+    mainVoiceActive = true;
+    btn.classList.add('recording');
+    status.textContent = '🎙️ Listening...';
+  } else {
+    voiceRecognition.stop();
+    mainVoiceActive = false;
+    btn.classList.remove('recording');
+    status.textContent = 'Tap to start speaking';
+  }
+}
+
+function switchTranslator(panel) {
+  document.querySelectorAll('.translator-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.trans-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+panel)?.classList.add('active');
+  const idx = {sign2text:0,text2sign:1,voice2sign:2}[panel];
+  document.querySelectorAll('.trans-tab')[idx]?.classList.add('active');
+}
+
+// ========== PRACTICE GAMES ==========
+let allFlashcards = [];
+function buildFlashcards() {
+  allFlashcards = [
+    ...ISL_ALPHABETS.map(a=>({front:a.sign, answer:a.letter, extra:a.trans?.gu||''})),
+    ...ISL_NUMBERS.map(n=>({front:n.sign, answer:n.word, extra:n.trans?.gu||''})),
+    ...(ISL_WORDS.greetings||[]).map(w=>({front:w.sign, answer:w.word, extra:w.trans?.gu||''})),
+    ...(ISL_WORDS.food||[]).map(w=>({front:w.sign, answer:w.word, extra:w.trans?.gu||''}))
+  ].sort(()=>Math.random()-0.5).slice(0,15);
+}
+
+function startGame(type) {
+  document.getElementById('practiceGrid').style.display = 'none';
+  if (type === 'flashcard') {
+    buildFlashcards(); fcIndex = 0;
+    updateFC();
+    document.getElementById('flashcard-game').classList.add('active');
+  } else if (type === 'quiz') {
+    quizScore = 0;
+    document.getElementById('quiz-game').classList.add('active');
+    loadQuizQuestion();
+  } else {
+    document.getElementById('practiceGrid').style.display = 'grid';
+    showCelebration(`${type.charAt(0).toUpperCase()+type.slice(1)} Mode!`, 'Coming soon! Practice alphabets & words.');
+  }
+}
+
+function exitGame(type) {
+  document.getElementById(type+'-game').classList.remove('active');
+  document.getElementById('practiceGrid').style.display = 'grid';
+}
+
+function updateFC() {
+  const card = allFlashcards[fcIndex] || {front:'🤚',answer:'?',extra:''};
+  document.getElementById('fcSign').textContent = card.front;
+  document.getElementById('fcAnswer').textContent = card.answer;
+  document.getElementById('fcGujarati').textContent = card.extra;
+  document.getElementById('fcProgress').textContent = `Card ${fcIndex+1}/${allFlashcards.length}`;
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+function fcNavigate(dir) {
+  fcIndex = Math.max(0, Math.min(allFlashcards.length-1, fcIndex+dir));
+  updateFC();
+  if (dir > 0) addXP(2);
+}
+
+let quizData = [];
+function loadQuizQuestion() {
+  const allSigns = [
+    ...ISL_ALPHABETS.map(a=>({sign:a.sign,answer:a.letter})),
+    ...(ISL_WORDS.greetings||[]).map(w=>({sign:w.sign,answer:w.word})),
+    ...(ISL_WORDS.food||[]).map(w=>({sign:w.sign,answer:w.word})),
+    ...(ISL_WORDS.emotions||[]).map(w=>({sign:w.sign,answer:w.word}))
+  ];
+  const shuffled = allSigns.sort(()=>Math.random()-0.5);
+  const correct = shuffled[0];
+  const wrong = shuffled.slice(1,4).map(x=>x.answer);
+  const options = [correct.answer,...wrong].sort(()=>Math.random()-0.5);
+  quizAnswered = false;
+  document.getElementById('quizSignDisplay').textContent = correct.sign;
+  document.getElementById('quizQuestion').textContent = 'What does this ISL sign mean?';
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizScore').textContent = `Score: ${quizScore}`;
+  document.getElementById('quizOptions').innerHTML = options.map(opt=>`
+    <button class="quiz-opt" onclick="checkAnswer('${opt}','${correct.answer}')">${opt}</button>`).join('');
+  quizData = {correct, options};
+}
+function checkAnswer(chosen, correct) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  document.querySelectorAll('.quiz-opt').forEach(btn => {
+    if (btn.textContent === correct) btn.classList.add('correct');
+    else if (btn.textContent === chosen && chosen !== correct) btn.classList.add('wrong');
+  });
+  if (chosen === correct) {
+    quizScore++;
+    addXP(15);
+    document.getElementById('quizFeedback').innerHTML = '<span style="color:var(--success);font-weight:800">✅ Correct! +15 XP</span>';
+    if (quizScore % 5 === 0) showCelebration('Streak! 🎉',`${quizScore} correct in a row!`);
+  } else {
+    document.getElementById('quizFeedback').innerHTML = `<span style="color:var(--danger);font-weight:800">❌ The answer was: ${correct}</span>`;
+  }
+  setTimeout(loadQuizQuestion, 1800);
+}
+
+// ========== XP SYSTEM ==========
+function addXP(amount) {
+  userXP += amount;
+  document.querySelectorAll('.xp-fill').forEach(el => {
+    el.style.width = Math.min(100, (userXP % 1000) / 10) + '%';
+  });
+  document.querySelectorAll('.xp-level').forEach(el => {
+    el.textContent = `${userXP % 1000} / 1000 XP 🦒`;
+  });
+}
+
+// ========== AUTH ==========
+function handleLogin() {
+  showCelebration('Welcome Back! 🎉','Continue your ISL journey!');
+  setTimeout(()=>{ hideCelebration(); showPage('dashboard'); }, 1500);
+}
+function handleRegister() {
+  showCelebration('Welcome to SignBridge! 🦒','Your ISL journey starts now! +50 XP for joining!');
+  addXP(50);
+  setTimeout(()=>{ hideCelebration(); showPage('lessons'); }, 1800);
+}
+function handleGuestLogin() { showPage('home'); showToast('Browsing as guest','👋'); }
+
+// ========== CELEBRATIONS ==========
+function showCelebration(title, msg) {
+  document.getElementById('celebTitle').textContent = title;
+  document.getElementById('celebMsg').textContent = msg;
+  document.getElementById('celebration').classList.add('show');
+  launchConfetti();
+}
+function hideCelebration() { document.getElementById('celebration').classList.remove('show'); }
+
+function launchConfetti() {
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#6C63FF','#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#F4A627'];
+  container.innerHTML = '';
+  for (let i=0;i<50;i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = `left:${Math.random()*100}%;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-delay:${Math.random()*1}s;animation-duration:${2+Math.random()*2}s;border-radius:${Math.random()>0.5?'50%':'2px'}`;
+    container.appendChild(c);
+  }
+  setTimeout(()=>container.innerHTML='', 4000);
+}
+
+// ========== TOAST ==========
+function showToast(msg, icon='✅') {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastIcon').textContent = icon;
+  t.classList.add('show');
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ========== RESPONSIVE GRID FIX ==========
+function fixTransGrid() {
+  document.querySelectorAll('.trans-grid').forEach(g=>{
+    if (window.innerWidth < 700) g.style.gridTemplateColumns = '1fr';
+    else g.style.gridTemplateColumns = '1fr 1fr';
+  });
+}
+window.addEventListener('resize', fixTransGrid);
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded', ()=>{ init(); fixTransGrid(); });
+</script>
+</body>
+</html>
